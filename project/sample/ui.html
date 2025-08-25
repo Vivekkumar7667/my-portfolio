@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Streamline Your Workflow</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        /* CSS Variables for Theming */
+        :root {
+            /* Colors */
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --error: #ef476f;
+            
+            /* Neutral Colors */
+            --white: #ffffff;
+            --gray-50: #f8f9fa;
+            --gray-100: #f1f3f5;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #868e96;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
+            --black: #000000;
+            
+            /* Backgrounds */
+            --bg-primary: var(--white);
+            --bg-secondary: var(--gray-100);
+            --bg-tertiary: var(--gray-200);
+            
+            /* Text */
+            --text-primary: var(--gray-900);
+            --text-secondary: var(--gray-700);
+            --text-tertiary: var(--gray-600);
+            --text-inverse: var(--white);
+            
+            /* Borders */
+            --border-color: var(--gray-300);
+            --border-radius: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-20: 5rem;
+            --space-24: 6rem;
+            
+            /* Typography */
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+            
+            /* Transitions */
+            --transition: all 0.3s ease;
+            
+            /* Container */
+            --container-max-width: 1200px;
+        }
+
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --bg-primary: var(--gray-900);
+            --bg-secondary: var(--gray-800);
+            --bg-tertiary: var(--gray-700);
+            --text-primary: var(--white);
+            --text-secondary: var(--gray-200);
+            --text-tertiary: var(--gray-400);
+            --border-color: var(--gray-700);
+        }
+
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            transition: var(--transition);
+        }
+
+        /* Utility Classes */
+        .container {
+            width: 100%;
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .gap-4 {
+            gap: var(--space-4);
+        }
+
+        .gap-6 {
+            gap: var(--space-6);
+        }
+
+        .gap-8 {
+            gap: var(--space-8);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .mt-2 {
+            margin-top: var(--space-2);
+        }
+
+        .mt-4 {
+            margin-top: var(--space-4);
+        }
+
+        .mt-6 {
+            margin-top: var(--space-6);
+        }
+
+        .mt-8 {
+            margin-top: var(--space-8);
+        }
+
+        .mt-12 {
+            margin-top: var(--space-12);
+        }
+
+        .mb-4 {
+            margin-bottom: var(--space-4);
+        }
+
+        .mb-6 {
+            margin-bottom: var(--space-6);
+        }
+
+        .mb-8 {
+            margin-bottom: var(--space-8);
+        }
+
+        .p-4 {
+            padding: var(--space-4);
+        }
+
+        .p-6 {
+            padding: var(--space-6);
+        }
+
+        .p-8 {
+            padding: var(--space-8);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Text Sizes */
+        .text-sm {
+            font-size: var(--text-sm);
+        }
+
+        .text-base {
+            font-size: var(--text-base);
+        }
+
+        .text-lg {
+            font-size: var(--text-lg);
+        }
+
+        .text-xl {
+            font-size: var(--text-xl);
+        }
+
+        .text-2xl {
+            font-size: var(--text-2xl);
+        }
+
+        .text-3xl {
+            font-size: var(--text-3xl);
+        }
+
+        .text-4xl {
+            font-size: var(--text-4xl);
+        }
+
+        .text-5xl {
+            font-size: var(--text-5xl);
+        }
+
+        /* Button Component */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            font-size: var(--text-base);
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--primary);
+        }
+
+        .btn-ghost:hover {
+            background-color: var(--gray-100);
+        }
+
+        .btn-lg {
+            padding: var(--space-4) var(--space-8);
+            font-size: var(--text-lg);
+        }
+
+        .btn-sm {
+            padding: var(--space-2) var(--space-4);
+            font-size: var(--text-sm);
+        }
+
+        /* Card Component */
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            padding: var(--space-6) var(--space-6) 0 var(--space-6);
+        }
+
+        .card-body {
+            padding: var(--space-6);
+        }
+
+        .card-footer {
+            padding: 0 var(--space-6) var(--space-6) var(--space-6);
+        }
+
+        /* Navbar Component */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4) 0;
+            background-color: var(--bg-primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: var(--text-xl);
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            gap: var(--space-6);
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: var(--text-xl);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: var(--space-20) 0;
+            background: linear-gradient(to bottom, var(--bg-primary), var(--bg-secondary));
+        }
+
+        .hero-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: var(--space-20) 0;
+            background-color: var(--bg-primary);
+        }
+
+        .feature-icon {
+            font-size: var(--space-12);
+            color: var(--primary);
+            margin-bottom: var(--space-4);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: var(--space-20) 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .testimonial-card {
+            background-color: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: var(--space-8);
+            box-shadow: var(--shadow);
+        }
+
+        /* Stats */
+        .stats {
+            padding: var(--space-20) 0;
+            background-color: var(--bg-primary);
+        }
+
+        .stat-number {
+            font-size: var(--text-5xl);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: var(--space-2);
+        }
+
+        /* Footer */
+        .footer {
+            padding: var(--space-12) 0;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: var(--space-4);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: var(--space-6);
+        }
+
+        .tab {
+            padding: var(--space-3) var(--space-4);
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Pricing Cards */
+        .pricing-card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: var(--space-8);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -10px;
+            right: var(--space-6);
+            background-color: var(--accent);
+            color: var(--white);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--border-radius);
+            font-size: var(--text-sm);
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: var(--text-4xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: var(--space-4) 0;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--space-6);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-2);
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .form-text {
+            display: block;
+            margin-top: var(--space-2);
+            font-size: var(--text-sm);
+            color: var(--text-tertiary);
+        }
+
+        .form-control.error {
+            border-color: var(--error);
+        }
+
+        .error-text {
+            color: var(--error);
+            font-size: var(--text-sm);
+            margin-top: var(--space-2);
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: var(--space-8);
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-20px);
+            transition: var(--transition);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: var(--text-2xl);
+            cursor: pointer;
+            color: var(--text-tertiary);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: var(--space-6);
+            right: var(--space-6);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--error);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar-nav {
+                display: none;
+            }
+
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .grid-cols-md-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .grid-cols-md-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-primary);
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .navbar-nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background-color: var(--bg-primary);
+                padding: var(--space-6);
+                box-shadow: var(--shadow-md);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+
+            .navbar-nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="navbar-brand">TaskFlow</a>
+            <ul class="navbar-nav">
+                <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#features" class="nav-link" data-page="features">Features</a></li>
+                <li><a href="#pricing" class="nav-link" data-page="pricing">Pricing</a></li>
+                <li><a href="#contact" class="nav-link" data-page="contact">Contact</a></li>
+            </ul>
+            <div class="flex items-center gap-4">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="text-4xl">Streamline Your Workflow with TaskFlow</h1>
+                    <p class="text-xl mt-4">The ultimate project management tool for teams of all sizes. Organize, prioritize, and track your tasks with ease.</p>
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="btn btn-primary btn-lg">Get Started</a>
+                        <a href="#" class="btn btn-outline btn-lg" id="demoBtn">View Demo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features">
+            <div class="container">
+                <h2 class="text-3xl text-center">Powerful Features</h2>
+                <p class="text-center text-lg mt-4">Everything you need to manage your projects efficiently</p>
+                
+                <div class="grid grid-cols-1 grid-cols-md-3 gap-8 mt-12">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">📊</div>
+                            <h3 class="text-xl">Visual Task Management</h3>
+                            <p class="mt-4">Organize tasks with intuitive boards, lists, and timelines to visualize your project progress.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">👥</div>
+                            <h3 class="text-xl">Team Collaboration</h3>
+                            <p class="mt-4">Assign tasks, share files, and communicate with your team in real-time.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">⏱️</div>
+                            <h3 class="text-xl">Time Tracking</h3>
+                            <p class="mt-4">Monitor time spent on tasks and generate detailed reports for better productivity insights.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="container">
+                <h2 class="text-3xl text-center">What Our Users Say</h2>
+                <p class="text-center text-lg mt-4">Join thousands of satisfied teams worldwide</p>
+                
+                <div class="grid grid-cols-1 grid-cols-md-3 gap-8 mt-12">
+                    <div class="testimonial-card">
+                        <p>"TaskFlow has transformed how our team works. We've seen a 40% increase in productivity since we started using it."</p>
+                        <div class="flex items-center mt-6">
+                            <div style="width: 50px; height: 50px; background-color: var(--primary); border-radius: 50%;" class="flex items-center justify-center text-white">JD</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold">John Doe</h4>
+                                <p class="text-sm">CTO, TechCorp</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <p>"The intuitive interface and powerful features make TaskFlow the best project management tool we've ever used."</p>
+                        <div class="flex items-center mt-6">
+                            <div style="width: 50px; height: 50px; background-color: var(--accent); border-radius: 50%;" class="flex items-center justify-center text-white">JS</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold">Jane Smith</h4>
+                                <p class="text-sm">Product Manager, InnovateCo</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <p>"We tried dozens of tools before finding TaskFlow. It's the perfect balance of simplicity and powerful features."</p>
+                        <div class="flex items-center mt-6">
+                            <div style="width: 50px; height: 50px; background-color: var(--secondary); border-radius: 50%;" class="flex items-center justify-center text-white">RS</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold">Robert Johnson</h4>
+                                <p class="text-sm">Team Lead, StartupXYZ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="stats">
+            <div class="container">
+                <div class="grid grid-cols-1 grid-cols-md-3 gap-8 text-center">
+                    <div>
+                        <div class="stat-number">95%</div>
+                        <p class="text-lg">Customer Satisfaction</p>
+                    </div>
+                    <div>
+                        <div class="stat-number">50K+</div>
+                        <p class="text-lg">Active Users</p>
+                    </div>
+                    <div>
+                        <div class="stat-number">1M+</div>
+                        <p class="text-lg">Tasks Completed</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Features Page -->
+    <div id="features" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1 class="text-4xl text-center">TaskFlow Features</h1>
+                <p class="text-xl text-center mt-4">Discover how TaskFlow can transform your workflow</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="management">Task Management</div>
+                    <div class="tab" data-tab="collaboration">Collaboration</div>
+                    <div class="tab" data-tab="reporting">Reporting</div>
+                </div>
+
+                <div class="tab-content active" data-tab="management">
+                    <div class="grid grid-cols-1 grid-cols-md-2 gap-8 items-center">
+                        <div>
+                            <h2 class="text-3xl">Advanced Task Management</h2>
+                            <p class="mt-4">Create, assign, and track tasks with our intuitive interface. Set priorities, due dates, and dependencies to keep your projects on track.</p>
+                            <ul class="mt-4" style="list-style: inside;">
+                                <li class="mt-2">Drag-and-drop task organization</li>
+                                <li class="mt-2">Customizable workflows</li>
+                                <li class="mt-2">Recurring tasks</li>
+                                <li class="mt-2">Time estimates</li>
+                            </ul>
+                        </div>
+                        <div class="card p-6">
+                            <div style="height: 250px; background-color: var(--bg-tertiary); border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center;">
+                                <p>Task Management Interface</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab="collaboration">
+                    <div class="grid grid-cols-1 grid-cols-md-2 gap-8 items-center">
+                        <div>
+                            <h2 class="text-3xl">Seamless Collaboration</h2>
+                            <p class="mt-4">Work together with your team in real-time. Share files, leave comments, and get notified about important updates.</p>
+                            <ul class="mt-4" style="list-style: inside;">
+                                <li class="mt-2">Real-time commenting</li>
+                                <li class="mt-2">File sharing</li>
+                                <li class="mt-2">@mentions</li>
+                                <li class="mt-2">Notification system</li>
+                            </ul>
+                        </div>
+                        <div class="card p-6">
+                            <div style="height: 250px; background-color: var(--bg-tertiary); border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center;">
+                                <p>Collaboration Interface</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab="reporting">
+                    <div class="grid grid-cols-1 grid-cols-md-2 gap-8 items-center">
+                        <div>
+                            <h2 class="text-3xl">Comprehensive Reporting</h2>
+                            <p class="mt-4">Gain insights into your team's performance with detailed reports and analytics. Track progress, identify bottlenecks, and optimize your workflow.</p>
+                            <ul class="mt-4" style="list-style: inside;">
+                                <li class="mt-2">Progress tracking</li>
+                                <li class="mt-2">Time tracking reports</li>
+                                <li class="mt-2">Burndown charts</li>
+                                <li class="mt-2">Export capabilities</li>
+                            </ul>
+                        </div>
+                        <div class="card p-6">
+                            <div style="height: 250px; background-color: var(--bg-tertiary); border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center;">
+                                <p>Reporting Dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Pricing Page -->
+    <div id="pricing" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1 class="text-4xl text-center">Simple, Transparent Pricing</h1>
+                <p class="text-xl text-center mt-4">Choose the plan that works best for your team</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="grid grid-cols-1 grid-cols-md-3 gap-8 mt-12">
+                    <div class="pricing-card">
+                        <div class="text-center">
+                            <h3 class="text-2xl">Starter</h3>
+                            <div class="price">$0<span class="text-lg">/month</span></div>
+                            <p class="text-tertiary">Perfect for individuals and small teams</p>
+                        </div>
+                        <ul class="mt-6" style="list-style: none;">
+                            <li class="mt-3">✓ Up to 5 users</li>
+                            <li class="mt-3">✓ Basic task management</li>
+                            <li class="mt-3">✓ 5GB storage</li>
+                            <li class="mt-3">✓ Basic support</li>
+                        </ul>
+                        <div class="text-center mt-6">
+                            <a href="#" class="btn btn-outline">Get Started</a>
+                        </div>
+                    </div>
+
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge">Most Popular</div>
+                        <div class="text-center">
+                            <h3 class="text-2xl">Professional</h3>
+                            <div class="price">$12<span class="text-lg">/user/month</span></div>
+                            <p class="text-tertiary">Ideal for growing businesses</p>
+                        </div>
+                        <ul class="mt-6" style="list-style: none;">
+                            <li class="mt-3">✓ Unlimited users</li>
+                            <li class="mt-3">✓ Advanced task management</li>
+                            <li class="mt-3">✓ Time tracking</li>
+                            <li class="mt-3">✓ 50GB storage</li>
+                            <li class="mt-3">✓ Priority support</li>
+                        </ul>
+                        <div class="text-center mt-6">
+                            <a href="#" class="btn btn-primary">Get Started</a>
+                        </div>
+                    </div>
+
+                    <div class="pricing-card">
+                        <div class="text-center">
+                            <h3 class="text-2xl">Enterprise</h3>
+                            <div class="price">$24<span class="text-lg">/user/month</span></div>
+                            <p class="text-tertiary">For large organizations with complex needs</p>
+                        </div>
+                        <ul class="mt-6" style="list-style: none;">
+                            <li class="mt-3">✓ Unlimited everything</li>
+                            <li class="mt-3">✓ Advanced reporting</li>
+                            <li class="mt-3">✓ Custom workflows</li>
+                            <li class="mt-3">✓ Single sign-on (SSO)</li>
+                            <li class="mt-3">✓ Dedicated account manager</li>
+                        </ul>
+                        <div class="text-center mt-6">
+                            <a href="#" class="btn btn-outline">Contact Sales</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1 class="text-4xl text-center">Get in Touch</h1>
+                <p class="text-xl text-center mt-4">We'd love to hear from you</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="grid grid-cols-1 grid-cols-md-2 gap-8">
+                    <div>
+                        <h2 class="text-3xl">Contact Us</h2>
+                        <p class="mt-4">Have questions about TaskFlow? Fill out the form and our team will get back to you as soon as possible.</p>
+                        
+                        <div class="mt-6">
+                            <h3 class="text-xl">Our Office</h3>
+                            <p class="mt-2">123 Business Ave, Suite 100<br>San Francisco, CA 94107</p>
+                            
+                            <h3 class="text-xl mt-6">Email Us</h3>
+                            <p class="mt-2">info@taskflow.com</p>
+                            
+                            <h3 class="text-xl mt-6">Call Us</h3>
+                            <p class="mt-2">+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" class="form-control" placeholder="Your name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" class="form-control" placeholder="your.email@example.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="company" class="form-label">Company</label>
+                                <input type="text" id="company" class="form-control" placeholder="Your company">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="interest" class="form-label">Interest</label>
+                                <select id="interest" class="form-control">
+                                    <option value="">Select an option</option>
+                                    <option value="demo">Product Demo</option>
+                                    <option value="sales">Sales Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="partnership">Partnership</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea id="message" class="form-control" rows="5" placeholder="Your message..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="grid grid-cols-1 grid-cols-md-3 gap-8">
+                <div>
+                    <h3 class="text-xl">TaskFlow</h3>
+                    <p class="mt-4">The ultimate project management tool for teams of all sizes.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl">Quick Links</h3>
+                    <ul class="mt-4" style="list-style: none;">
+                        <li class="mt-2"><a href="#home" class="nav-link">Home</a></li>
+                        <li class="mt-2"><a href="#features" class="nav-link">Features</a></li>
+                        <li class="mt-2"><a href="#pricing" class="nav-link">Pricing</a></li>
+                        <li class="mt-2"><a href="#contact" class="nav-link">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl">Connect With Us</h3>
+                    <div class="flex gap-4 mt-4">
+                        <a href="#" class="btn btn-ghost">Twitter</a>
+                        <a href="#" class="btn btn-ghost">LinkedIn</a>
+                        <a href="#" class="btn btn-ghost">Facebook</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-color mt-8 pt-8 text-center">
+                <p>© 2023 TaskFlow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Demo Modal -->
+    <div class="modal" id="demoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl">Request a Demo</h2>
+                <button class="modal-close" id="modalClose">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Fill out the form below and our team will contact you to schedule a personalized demo of TaskFlow.</p>
+                
+                <form class="mt-6">
+                    <div class="form-group">
+                        <label for="demoName" class="form-label">Full Name</label>
+                        <input type="text" id="demoName" class="form-control" placeholder="Your name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="demoEmail" class="form-label">Email Address</label>
+                        <input type="email" id="demoEmail" class="form-control" placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="demoCompany" class="form-label">Company</label>
+                        <input type="text" id="demoCompany" class="form-control" placeholder="Your company">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-4">Request Demo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span>✅</span>
+        <p>Your message has been sent successfully!</p>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
+        });
+
+        // Page Navigation
+        const pageLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        
+        pageLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetPage = link.getAttribute('data-page');
+                
+                // Update active page
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                    if (page.id === targetPage) {
+                        page.classList.add('active');
+                    }
+                });
+                
+                // Update active nav link
+                pageLinks.forEach(navLink => {
+                    navLink.classList.remove('active');
+                });
+                link.classList.add('active');
+                
+                // Close mobile menu if open
+                document.getElementById('hamburger').classList.remove('active');
+                document.querySelector('.navbar-nav').classList.remove('active');
+            });
+        });
+
+        // Tabs
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active tab content
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.getAttribute('data-tab') === tabId) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Modal
+        const demoBtn = document.getElementById('demoBtn');
+        const demoModal = document.getElementById('demoModal');
+        const modalClose = document.getElementById('modalClose');
+        
+        demoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            demoModal.classList.add('active');
+        });
+        
+        modalClose.addEventListener('click', () => {
+            demoModal.classList.remove('active');
+        });
+
+        // Form Submission
+        const contactForm = document.getElementById('contactForm');
+        const toast = document.getElementById('toast');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Show toast notification
+            toast.classList.add('active');
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 3000);
+            
+            // Reset form
+            contactForm.reset();
+        });
+
+        // Mobile Menu
+        const hamburger = document.getElementById('hamburger');
+        const navbarNav = document.querySelector('.navbar-nav');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navbarNav.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
