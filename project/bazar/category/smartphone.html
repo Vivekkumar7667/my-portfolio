@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartphone Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px 0 0 30px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-bar input:focus {
+            border-color: #3498db;
+        }
+
+        .search-bar button {
+            padding: 12px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .search-bar button:hover {
+            background: #2980b9;
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-section h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .filter-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .brands-section {
+            margin-bottom: 30px;
+        }
+
+        .brands-section h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .brand-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .brand-logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #3498db;
+        }
+
+        .brand-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .products-section h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .product-image i {
+            font-size: 5rem;
+            color: #3498db;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+
+        .product-features {
+            margin-bottom: 20px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .feature i {
+            color: #3498db;
+            margin-right: 8px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #2980b9;
+        }
+
+        .active-brand {
+            background: #3498db;
+            color: white;
+        }
+
+        .active-brand .brand-name {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .filter-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .brands-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Smartphone Store</h1>
+            <p>Find the perfect smartphone for your needs</p>
+        </header>
+
+        <div class="search-container">
+            <div class="search-bar">
+                <input type="text" placeholder="Search for smartphones...">
+                <button><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h2>Filter Options</h2>
+            <div class="filter-options">
+                <div class="filter-group">
+                    <label for="price">Price Range</label>
+                    <select id="price">
+                        <option value="">All Prices</option>
+                        <option value="0-15000">Under ₹15,000</option>
+                        <option value="15000-30000">₹15,000 - ₹30,000</option>
+                        <option value="30000-50000">₹30,000 - ₹50,000</option>
+                        <option value="50000+">Over ₹50,000</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="ram">RAM</label>
+                    <select id="ram">
+                        <option value="">All RAM</option>
+                        <option value="4">4 GB</option>
+                        <option value="6">6 GB</option>
+                        <option value="8">8 GB</option>
+                        <option value="12">12 GB or more</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="storage">Storage</label>
+                    <select id="storage">
+                        <option value="">All Storage</option>
+                        <option value="64">64 GB</option>
+                        <option value="128">128 GB</option>
+                        <option value="256">256 GB</option>
+                        <option value="512">512 GB or more</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="battery">Battery</label>
+                    <select id="battery">
+                        <option value="">All Battery</option>
+                        <option value="4000">4000 mAh or less</option>
+                        <option value="5000">5000 mAh</option>
+                        <option value="6000">6000 mAh or more</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="camera">Camera</label>
+                    <select id="camera">
+                        <option value="">All Cameras</option>
+                        <option value="48">48 MP or less</option>
+                        <option value="64">64 MP</option>
+                        <option value="108">108 MP or more</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="brands-section">
+            <h2>Popular Brands</h2>
+            <div class="brands-grid">
+                <div class="brand-card active-brand" data-brand="apple">
+                    <div class="brand-logo">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <div class="brand-name">Apple</div>
+                </div>
+
+                <div class="brand-card" data-brand="samsung">
+                    <div class="brand-logo">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="brand-name">Samsung</div>
+                </div>
+
+                <div class="brand-card" data-brand="oneplus">
+                    <div class="brand-logo">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="brand-name">OnePlus</div>
+                </div>
+
+                <div class="brand-card" data-brand="xiaomi">
+                    <div class="brand-logo">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="brand-name">Xiaomi</div>
+                </div>
+
+                <div class="brand-card" data-brand="vivo">
+                    <div class="brand-logo">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="brand-name">Vivo</div>
+                </div>
+
+                <div class="brand-card" data-brand="oppo">
+                    <div class="brand-logo">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="brand-name">Oppo</div>
+                </div>
+
+                <div class="brand-card" data-brand="realme">
+                    <div class="brand-logo">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="brand-name">Realme</div>
+                </div>
+
+                <div class="brand-card" data-brand="motorola">
+                    <div class="brand-logo">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="brand-name">Motorola</div>
+                </div>
+
+                <div class="brand-card" data-brand="google">
+                    <div class="brand-logo">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <div class="brand-name">Google Pixel</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="products-section">
+            <h2>Apple Smartphones</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone 15 Pro Max</h3>
+                        <div class="product-price">₹1,39,900</div>
+                        <div class="product-features">
+                            <div class="feature">
+                                <i class="fas fa-microchip"></i> A17 Pro Chip
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-memory"></i> 8GB RAM
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-hdd"></i> 256GB Storage
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-battery-full"></i> 4422 mAh
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-camera"></i> 48MP Main Camera
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone 15</h3>
+                        <div class="product-price">₹79,900</div>
+                        <div class="product-features">
+                            <div class="feature">
+                                <i class="fas fa-microchip"></i> A16 Bionic Chip
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-memory"></i> 6GB RAM
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-hdd"></i> 128GB Storage
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-battery-full"></i> 3349 mAh
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-camera"></i> 48MP Dual Camera
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone 14</h3>
+                        <div class="product-price">₹69,900</div>
+                        <div class="product-features">
+                            <div class="feature">
+                                <i class="fas fa-microchip"></i> A15 Bionic Chip
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-memory"></i> 6GB RAM
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-hdd"></i> 128GB Storage
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-battery-full"></i> 3279 mAh
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-camera"></i> 12MP Dual Camera
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone SE (3rd Gen)</h3>
+                        <div class="product-price">₹49,900</div>
+                        <div class="product-features">
+                            <div class="feature">
+                                <i class="fas fa-microchip"></i> A15 Bionic Chip
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-memory"></i> 4GB RAM
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-hdd"></i> 64GB Storage
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-battery-full"></i> 2018 mAh
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-camera"></i> 12MP Camera
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const brandCards = document.querySelectorAll('.brand-card');
+            
+            brandCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove active class from all brands
+                    brandCards.forEach(c => c.classList.remove('active-brand'));
+                    
+                    // Add active class to clicked brand
+                    this.classList.add('active-brand');
+                    
+                    // Get the brand name
+                    const brandName = this.getAttribute('data-brand');
+                    
+                    // Update the products section title
+                    document.querySelector('.products-section h2').textContent = 
+                        `${brandName.charAt(0).toUpperCase() + brandName.slice(1)} Smartphones`;
+                    
+                    // In a real app, you would fetch products for this brand from a server
+                    // For this demo, we'll just simulate a change
+                    console.log(`Loading products for ${brandName}...`);
+                });
+            });
+            
+            // Add to cart functionality
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.parentElement.querySelector('.product-name').textContent;
+                    alert(`${productName} added to cart!`);
+                });
+            });
+            
+            // Filter functionality
+            const filterSelects = document.querySelectorAll('.filter-group select');
+            
+            filterSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    console.log(`Filter changed: ${this.id} = ${this.value}`);
+                    // In a real app, you would filter products based on these values
+                });
+            });
+            
+            // Search functionality
+            const searchButton = document.querySelector('.search-bar button');
+            const searchInput = document.querySelector('.search-bar input');
+            
+            searchButton.addEventListener('click', function() {
+                performSearch();
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            function performSearch() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm) {
+                    alert(`Searching for: ${searchTerm}`);
+                    // In a real app, you would perform search and update the products grid
+                }
+            }
+        });
+    </script>
+</body>
+</html>
