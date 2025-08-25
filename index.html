@@ -100,7 +100,7 @@
       <a href="#experience" class="nav-link text-white hover:text-blue-400 transition">Experience</a>
       <a href="#contact" class="nav-link text-white hover:text-blue-400 transition">Contact</a>
       <a href="vk/student.html" class="nav-link text-white hover:text-blue-400 transition">Report card</a>
-      <a href="vk/bazar.html" class="nav-link text-white hover:text-blue-400 transition">Mart</a>
+      <a href="vivek/mart.html" class="nav-link text-white hover:text-blue-400 transition">Mart</a>
       <button onclick="toggleMode()" class="px-3 py-1 bg-gray-700 text-white rounded-full transition hover:bg-gray-600">
         <i class="fas fa-moon" id="mode-icon"></i>
       </button>
@@ -360,54 +360,74 @@
         <button class="filter-btn bg-gray-600 px-4 py-2 rounded-lg" onclick="filterProjects('opensource')">Open Source</button>
       </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
         <!-- Project 1 -->
-        <div class="project-card web fullstack bg-black bg-opacity-60 dark:bg-white dark:bg-opacity-80 rounded-xl shadow-md overflow-hidden">
-          <div class="relative overflow-hidden h-48">
-            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="E-commerce Platform" class="w-full h-full object-cover transition duration-500 hover:scale-110">
-            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
-              <a href="#" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Live Demo</a>
-              <a href="#" class="px-4 py-2 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white">View Code</a>
-            </div>
-          </div>
-          <div class="p-6">
-            <h4 class="text-xl font-semibold mb-2">E-commerce Platform</h4>
-            <p class="text-gray-400 dark:text-gray-600 text-sm mb-4">A full-featured online store with payment integration, admin dashboard, and inventory management.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">React</span>
-              <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Node.js</span>
-              <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">MongoDB</span>
-              <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Stripe API</span>
-            </div>
-          </div>
-        </div>
+<div class="project-card ecommerce bg-black bg-opacity-60 dark:bg-white dark:bg-opacity-80 rounded-xl shadow-md overflow-hidden">
+  <div class="relative overflow-hidden h-48">
+    <img src="https://images.unsplash.com/photo-1607082349566-187342175e2a?auto=format&fit=crop&w=800&q=80" 
+         alt="Bazar E-Commerce Website" 
+         class="w-full h-full object-cover transition duration-500 hover:scale-110">
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+      <a href="project/bazar/index.html" 
+         class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Live Demo</a>
+      <a href="https://github.com/yourusername/bazar-ecommerce" 
+         target="_blank" 
+         class="px-4 py-2 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white">View Code</a>
+    </div>
+  </div>
+  <div class="p-6">
+    <h4 class="text-xl font-semibold mb-2">Bazar E-Commerce Website</h4>
+    <p class="text-gray-400 dark:text-gray-600 text-sm mb-4">
+      A full-stack e-commerce platform with user authentication, product catalog, cart system, checkout with Razorpay, order history, and admin dashboard for managing products and orders.
+    </p>
+    <div class="flex flex-wrap gap-2">
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">React</span>
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Node.js</span>
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Express</span>
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">MongoDB</span>
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Razorpay</span>
+    </div>
+  </div>
+</div>
+
+
         
-        <!-- Project 2 -->
-        <div class="project-card mobile bg-black bg-opacity-60 dark:bg-white dark:bg-opacity-80 rounded-xl shadow-md overflow-hidden">
-          <div class="relative overflow-hidden h-48">
-            <img src="https://images.unsplash.com/photo-1581093450021-4a7360e9a7f9?auto=format&fit=crop&w=800&q=80" alt="Fitness Tracker App" class="w-full h-full object-cover transition duration-500 hover:scale-110">
-            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
-              <a href="#" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Play Store</a>
-              <a href="#" class="px-4 py-2 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white">View Code</a>
-            </div>
-          </div>
-          <div class="p-6">
-            <h4 class="text-xl font-semibold mb-2">Fitness Tracker App</h4>
-            <p class="text-gray-400 dark:text-gray-600 text-sm mb-4">Android app for tracking workouts, nutrition, and progress with data visualization.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Kotlin</span>
-              <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Firebase</span>
-              <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Room DB</span>
-              <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">MPAndroidChart</span>
-            </div>
-          </div>
-        </div>
+        <!-- Project 2 - Fitness Website -->
+<div class="project-card mobile bg-black bg-opacity-60 dark:bg-white dark:bg-opacity-80 rounded-xl shadow-md overflow-hidden">
+  <div class="relative overflow-hidden h-48">
+    <img src="https://images.unsplash.com/photo-1558611848-73f7eb4001a1?auto=format&fit=crop&w=800&q=80" 
+         alt="Fitness Website" 
+         class="w-full h-full object-cover transition duration-500 hover:scale-110">
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+      <a href="project/fit/index.html" 
+         class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">View Page</a>
+      <a href="#" 
+         class="px-4 py-2 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white">View Code</a>
+    </div>
+  </div>
+  <div class="p-6">
+    <h4 class="text-xl font-semibold mb-2">Fitness Website</h4>
+    <p class="text-gray-400 dark:text-gray-600 text-sm mb-4">
+      Responsive fitness website offering online workout plans, diet charts, trainer booking, and progress tracking. 
+      Includes modern UI with animations and membership plans.
+    </p>
+    <div class="flex flex-wrap gap-2">
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">HTML</span>
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">CSS (Tailwind)</span>
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">JavaScript</span>
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Responsive Design</span>
+      <span class="px-2 py-1 bg-gray-700 dark:bg-gray-200 rounded-full text-xs">Animations</span>
+    </div>
+  </div>
+</div>
+
         
         <!-- Project 3 -->
         <div class="project-card web opensource bg-black bg-opacity-60 dark:bg-white dark:bg-opacity-80 rounded-xl shadow-md overflow-hidden">
           <div class="relative overflow-hidden h-48">
             <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Developer Portfolio Template" class="w-full h-full object-cover transition duration-500 hover:scale-110">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
-              <a href="#" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Live Demo</a>
+              <a href="project/portfolio/index.html" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Live Demo</a>
               <a href="#" class="px-4 py-2 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white">View Code</a>
             </div>
           </div>
@@ -428,7 +448,7 @@
           <div class="relative overflow-hidden h-48">
             <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=800&q=80" alt="Task Management System" class="w-full h-full object-cover transition duration-500 hover:scale-110">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
-              <a href="#" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Live Demo</a>
+              <a href="project/task/index.html" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Live Demo</a>
               <a href="#" class="px-4 py-2 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white">View Code</a>
             </div>
           </div>
@@ -449,7 +469,7 @@
           <div class="relative overflow-hidden h-48">
             <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?auto=format&fit=crop&w=800&q=80" alt="Recipe Finder App" class="w-full h-full object-cover transition duration-500 hover:scale-110">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
-              <a href="#" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Play Store</a>
+              <a href="project/recipe/index.html" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Play Store</a>
               <a href="#" class="px-4 py-2 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white">View Code</a>
             </div>
           </div>
@@ -470,7 +490,7 @@
           <div class="relative overflow-hidden h-48">
             <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=800&q=80" alt="UI Component Library" class="w-full h-full object-cover transition duration-500 hover:scale-110">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
-              <a href="#" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Documentation</a>
+              <a href="project/sample/ui.html" class="px-4 py-2 bg-blue-500 rounded-lg mr-2 hover:bg-blue-600">Documentation</a>
               <a href="#" class="px-4 py-2 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white">View Code</a>
             </div>
           </div>
