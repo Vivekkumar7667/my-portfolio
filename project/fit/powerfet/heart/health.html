@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Monitoring Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f9c74f;
+            --danger: #f94144;
+            --gray: #6c757d;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 25px;
+            color: var(--gray);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .heart-rate .card-icon {
+            background: rgba(247, 37, 133, 0.2);
+            color: var(--accent);
+        }
+
+        .sleep .card-icon {
+            background: rgba(76, 201, 240, 0.2);
+            color: var(--success);
+        }
+
+        .water .card-icon {
+            background: rgba(57, 12, 163, 0.2);
+            color: var(--secondary);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .heart-rate .progress {
+            background: var(--accent);
+            width: 75%;
+        }
+
+        .sleep .progress {
+            background: var(--success);
+            width: 60%;
+        }
+
+        .water .progress {
+            background: var(--primary);
+            width: 45%;
+        }
+
+        .goal {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .chart {
+            height: 250px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 15px;
+            gap: 10px;
+        }
+
+        .bar {
+            background: var(--primary);
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .recommendations {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+        }
+
+        .recommendations h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .recommendation-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .recommendation-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .recommendation-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .charts {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .user-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>HealthTrack</span>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Reports</a></li>
+                    <li><a href="#">Goals</a></li>
+                    <li><a href="#">Community</a></li>
+                </ul>
+            </nav>
+            
+            <div class="user-actions">
+                <button class="btn btn-outline">Log In</button>
+                <button class="btn btn-primary">Sign Up</button>
+            </div>
+        </header>
+        
+        <section class="hero">
+            <h1>Health Monitoring Dashboard</h1>
+            <p>Track heart rate, sleep patterns, and water intake for a complete health picture. Get insights into your daily habits and build a balanced lifestyle.</p>
+            <button class="btn btn-primary">Start Tracking Now</button>
+        </section>
+        
+        <section class="dashboard">
+            <div class="card heart-rate">
+                <div class="card-header">
+                    <h2 class="card-title">Heart Rate</h2>
+                    <div class="card-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                </div>
+                <div class="stat-value">72 bpm</div>
+                <div class="stat-label">Current resting heart rate</div>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="goal">Goal: Under 80 bpm</div>
+            </div>
+            
+            <div class="card sleep">
+                <div class="card-header">
+                    <h2 class="card-title">Sleep Patterns</h2>
+                    <div class="card-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                </div>
+                <div class="stat-value">6h 45m</div>
+                <div class="stat-label">Last night's sleep</div>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="goal">Goal: 8 hours per night</div>
+            </div>
+            
+            <div class="card water">
+                <div class="card-header">
+                    <h2 class="card-title">Water Intake</h2>
+                    <div class="card-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                </div>
+                <div class="stat-value">1.2L</div>
+                <div class="stat-label">Consumed today</div>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="goal">Goal: 2.5L per day</div>
+            </div>
+        </section>
+        
+        <section class="charts">
+            <div class="chart-container">
+                <h2 class="chart-title">Weekly Heart Rate Trend</h2>
+                <div class="chart">
+                    <div class="bar" style="height: 65%;">
+                        <div class="bar-label">Mon</div>
+                    </div>
+                    <div class="bar" style="height: 70%;">
+                        <div class="bar-label">Tue</div>
+                    </div>
+                    <div class="bar" style="height: 60%;">
+                        <div class="bar-label">Wed</div>
+                    </div>
+                    <div class="bar" style="height: 75%;">
+                        <div class="bar-label">Thu</div>
+                    </div>
+                    <div class="bar" style="height: 72%;">
+                        <div class="bar-label">Fri</div>
+                    </div>
+                    <div class="bar" style="height: 68%;">
+                        <div class="bar-label">Sat</div>
+                    </div>
+                    <div class="bar" style="height: 65%;">
+                        <div class="bar-label">Sun</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h2 class="chart-title">Sleep Quality</h2>
+                <div class="chart">
+                    <div class="bar" style="height: 80%;">
+                        <div class="bar-label">Mon</div>
+                    </div>
+                    <div class="bar" style="height: 65%;">
+                        <div class="bar-label">Tue</div>
+                    </div>
+                    <div class="bar" style="height: 70%;">
+                        <div class="bar-label">Wed</div>
+                    </div>
+                    <div class="bar" style="height: 75%;">
+                        <div class="bar-label">Thu</div>
+                    </div>
+                    <div class="bar" style="height: 60%;">
+                        <div class="bar-label">Fri</div>
+                    </div>
+                    <div class="bar" style="height: 85%;">
+                        <div class="bar-label">Sat</div>
+                    </div>
+                    <div class="bar" style="height: 90%;">
+                        <div class="bar-label">Sun</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="recommendations">
+            <h2>Personalized Recommendations</h2>
+            <div class="recommendation-list">
+                <div class="recommendation-item">
+                    <i class="fas fa-walking"></i>
+                    <div>
+                        <h3>Increase Daily Steps</h3>
+                        <p>Try to reach 8,000 steps today. Consider a 15-minute walk after lunch.</p>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <i class="fas fa-glass-whiskey"></i>
+                    <div>
+                        <h3>Hydration Reminder</h3>
+                        <p>You're behind on your water goal. Drink 500ml within the next hour.</p>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <i class="fas fa-moon"></i>
+                    <div>
+                        <h3>Sleep Schedule</h3>
+                        <p>Try going to bed 30 minutes earlier to reach your sleep goal.</p>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <i class="fas fa-apple-alt"></i>
+                    <div>
+                        <h3>Nutrition Tip</h3>
+                        <p>Consider adding more leafy greens to your dinner for better sleep.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>&copy; 2023 HealthTrack. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple animation for the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+                card.classList.add('fade-in');
+            });
+            
+            // Update stats every 10 seconds (simulated)
+            setInterval(updateStats, 10000);
+            
+            function updateStats() {
+                // Simulate data changes
+                const heartRate = Math.floor(65 + Math.random() * 15);
+                document.querySelector('.heart-rate .stat-value').textContent = `${heartRate} bpm`;
+                
+                const sleepHours = Math.floor(6 + Math.random() * 2);
+                const sleepMins = Math.floor(Math.random() * 60);
+                document.querySelector('.sleep .stat-value').textContent = `${sleepHours}h ${sleepMins}m`;
+                
+                const waterIntake = (1 + Math.random() * 1.5).toFixed(1);
+                document.querySelector('.water .stat-value').textContent = `${waterIntake}L`;
+                
+                // Update progress bars
+                document.querySelector('.heart-rate .progress').style.width = `${(heartRate/100) * 100}%`;
+                document.querySelector('.sleep .progress').style.width = `${(sleepHours/8) * 100}%`;
+                document.querySelector('.water .progress').style.width = `${(waterIntake/2.5) * 100}%`;
+            }
+        });
+    </script>
+</body>
+</html>
