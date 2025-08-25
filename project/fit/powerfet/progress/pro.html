@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Progress Analytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #3a86ff;
+            --secondary: #ff006e;
+            --accent: #8338ec;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #ffbe0b;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .dashboard {
+                grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: minmax(180px, auto);
+            grid-template-areas:
+                "summary summary charts"
+                "workout workout charts"
+                "goals goals charts"
+                "metrics metrics metrics";
+            }
+            
+            .summary { grid-area: summary; }
+            .workout-history { grid-area: workout; }
+            .goals { grid-area: goals; }
+            .charts { grid-area: charts; }
+            .metrics { grid-area: metrics; }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .card-content {
+            height: calc(100% - 40px);
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: var(--light);
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 100%;
+            min-height: 250px;
+        }
+        
+        .workout-list {
+            list-style: none;
+        }
+        
+        .workout-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .workout-item:last-child {
+            border-bottom: none;
+        }
+        
+        .workout-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .workout-date {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--light-gray);
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 4px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .metric-box {
+            text-align: center;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 10px;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(58, 134, 255, 0.3);
+        }
+        
+        .btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(58, 134, 255, 0.4);
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .insight-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .insight-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(58, 134, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .insight-text {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+        
+        .highlight {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Progress Analytics</h1>
+            <p>Visualize your progress with detailed charts and insights into your fitness journey</p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="card summary">
+                <div class="card-header">
+                    <h2 class="card-title">Summary</h2>
+                    <span>This Week</span>
+                </div>
+                <div class="card-content">
+                    <div class="summary-stats">
+                        <div class="stat">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Workouts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">12h</div>
+                            <div class="stat-label">Active Time</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">3,200</div>
+                            <div class="stat-label">Calories</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">87%</div>
+                            <div class="stat-label">Consistency</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card workout-history">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Workouts</h2>
+                    <span>View All</span>
+                </div>
+                <div class="card-content">
+                    <ul class="workout-list">
+                        <li class="workout-item">
+                            <div>
+                                <div class="workout-name">Upper Body Strength</div>
+                                <div class="workout-date">Today, 8:30 AM</div>
+                            </div>
+                            <div>45 min</div>
+                        </li>
+                        <li class="workout-item">
+                            <div>
+                                <div class="workout-name">Running</div>
+                                <div class="workout-date">Yesterday, 7:15 AM</div>
+                            </div>
+                            <div>35 min</div>
+                        </li>
+                        <li class="workout-item">
+                            <div>
+                                <div class="workout-name">Yoga & Stretching</div>
+                                <div class="workout-date">Oct 12, 6:00 PM</div>
+                            </div>
+                            <div>50 min</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card goals">
+                <div class="card-header">
+                    <h2 class="card-title">Goal Progress</h2>
+                    <span>3/5</span>
+                </div>
+                <div class="card-content">
+                    <h3>Lose 5kg in 2 months</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                    <p>You're <span class="highlight">ahead of schedule</span>! At this rate, you'll reach your goal in 3 weeks.</p>
+                    
+                    <h3>Run 5km without stopping</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                    </div>
+                    <p>You've <span class="highlight">improved by 15%</span> from last month. Keep it up!</p>
+                </div>
+            </div>
+            
+            <div class="card charts">
+                <div class="card-header">
+                    <h2 class="card-title">Progress Charts</h2>
+                    <span>Last 30 Days</span>
+                </div>
+                <div class="card-content">
+                    <div class="chart-container">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card metrics">
+                <div class="card-header">
+                    <h2 class="card-title">Performance Metrics</h2>
+                    <span>Monthly Avg.</span>
+                </div>
+                <div class="card-content">
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <div class="metric-value">135</div>
+                            <div class="metric-label">Avg. Heart Rate</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">7,200</div>
+                            <div class="metric-label">Steps per Day</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">6h 42m</div>
+                            <div class="metric-label">Sleep per Night</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">2,800</div>
+                            <div class="metric-label">Avg. Calories</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Personalized Insights</h2>
+            </div>
+            <div class="card-content">
+                <div class="insight-item">
+                    <div class="insight-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="insight-text">Your <span class="highlight">metabolic rate has increased by 8%</span> over the past month, indicating improved fitness.</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon">
+                        <i class="fas fa-trend-up"></i>
+                    </div>
+                    <div class="insight-text">You're most consistent with <span class="highlight">Tuesday and Thursday workouts</span>. Try adding a Monday session to accelerate progress.</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="insight-text">Based on your activity patterns, <span class="highlight">mornings are 23% more productive</span> for your workouts than evenings.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="btn-container">
+            <a href="#" class="btn">Explore Full Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            
+            // Sample data for the chart
+            const progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                    datasets: [
+                        {
+                            label: 'Weight (kg)',
+                            data: [72, 70.5, 70, 69.5, 69, 68.5],
+                            borderColor: '#3a86ff',
+                            backgroundColor: 'rgba(58, 134, 255, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Body Fat %',
+                            data: [24, 23.2, 22.8, 22.3, 21.9, 21.5],
+                            borderColor: '#ff006e',
+                            backgroundColor: 'rgba(255, 0, 110, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Weight and Body Fat Progress'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Measurements'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Add some interactive elements
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('highlighted');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
