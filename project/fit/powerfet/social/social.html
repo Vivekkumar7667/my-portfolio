@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitConnect - Social Fitness Community</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #3a86ff;
+            --secondary: #ff006e;
+            --accent: #8338ec;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #ffbe0b;
+            --danger: #fb5607;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--warning);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--warning);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions .btn {
+            margin-left: 10px;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2a75ff;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e0005e;
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: #7229db;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+            background: linear-gradient(rgba(58, 134, 255, 0.1), rgba(131, 56, 236, 0.1)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f9fa"/><path d="M0 0L100 100" stroke="%23e9ecef" stroke-width="2"/></svg>');
+            background-size: cover;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: var(--gray);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: var(--dark);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .feature-content {
+            padding: 25px;
+        }
+
+        .feature-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        /* Community Section */
+        .community {
+            padding: 60px 0;
+            background-color: var(--light);
+        }
+
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .community-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .community-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .community-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .community-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .community-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .community-content {
+            padding: 20px;
+        }
+
+        .community-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Challenges Section */
+        .challenges {
+            padding: 60px 0;
+        }
+
+        .challenge-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .challenge-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .challenge-header {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .challenge-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .challenge-content {
+            padding: 20px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary), var(--warning));
+            border-radius: 5px;
+        }
+
+        .challenge-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin: 20px 0;
+                justify-content: center;
+            }
+
+            .user-actions {
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .feature-icon {
+                height: 100px;
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--warning);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--warning);
+        }
+
+        .social-icons {
+            margin: 20px 0;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--warning);
+        }
+
+        .copyright {
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>FitConnect</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Workouts</a></li>
+                        <li><a href="#">Nutrition</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Progress</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <a href="login/sign.html" class="btn btn-primary">Sign Up</a>
+                    <a href="login/login.html" class="btn btn-secondary">Log In</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Connect, Share, and Grow Together</h1>
+            <p>Join our fitness community to connect with friends, share your achievements, and participate in group challenges for extra motivation.</p>
+            <a href="#" class="btn btn-accent">Join Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Social Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Connect with Friends</h3>
+                        <p>Find your fitness friends, follow their progress, and cheer each other on. Build your workout squad and achieve more together.</p>
+                        <a href="connect/friend.html" class="btn btn-primary">Find Friends</a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Share Achievements</h3>
+                        <p>Celebrate your milestones and share your success with the community. Get recognized for your hard work and dedication.</p>
+                        <a href="ach/achieve.html" class="btn btn-primary">Share Progress</a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Group Challenges</h3>
+                        <p>Join exciting fitness challenges, compete with friends, and earn rewards. Stay motivated with daily and weekly goals.</p>
+                        <a href="#" class="btn btn-primary">View Challenges</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community">
+        <div class="container">
+            <h2 class="section-title">Active Community Members</h2>
+            <div class="community-grid">
+                <div class="community-card">
+                    <div class="community-header">
+                        <div class="community-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="community-info">
+                            <h3>Sarah Johnson</h3>
+                            <p>Yoga Instructor</p>
+                        </div>
+                    </div>
+                    <div class="community-content">
+                        <p>"This community helped me stay consistent with my practice and connect with amazing people!"</p>
+                    </div>
+                    <div class="community-stats">
+                        <div class="stat">
+                            <div class="stat-value">128</div>
+                            <div class="stat-label">Workouts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">42</div>
+                            <div class="stat-label">Friends</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">18</div>
+                            <div class="stat-label">Challenges</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="community-card">
+                    <div class="community-header">
+                        <div class="community-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="community-info">
+                            <h3>Mike Rodriguez</h3>
+                            <p>Fitness Coach</p>
+                        </div>
+                    </div>
+                    <div class="community-content">
+                        <p>"The group challenges keep me motivated and the achievement sharing feature is fantastic!"</p>
+                    </div>
+                    <div class="community-stats">
+                        <div class="stat">
+                            <div class="stat-value">245</div>
+                            <div class="stat-label">Workouts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">67</div>
+                            <div class="stat-label">Friends</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">32</div>
+                            <div class="stat-label">Challenges</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="community-card">
+                    <div class="community-header">
+                        <div class="community-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="community-info">
+                            <h3>Jessica Lee</h3>
+                            <p>Marathon Runner</p>
+                        </div>
+                    </div>
+                    <div class="community-content">
+                        <p>"I've found my running buddies here and we push each other to be better every day!"</p>
+                    </div>
+                    <div class="community-stats">
+                        <div class="stat">
+                            <div class="stat-value">192</div>
+                            <div class="stat-label">Workouts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">53</div>
+                            <div class="stat-label">Friends</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">27</div>
+                            <div class="stat-label">Challenges</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenges Section -->
+    <section class="challenges">
+        <div class="container">
+            <h2 class="section-title">Ongoing Group Challenges</h2>
+            <div class="challenge-cards">
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <h3>30-Day Cardio Blast</h3>
+                        <p>Join 2,458 participants</p>
+                    </div>
+                    <div class="challenge-content">
+                        <p>Complete at least 30 minutes of cardio daily for 30 days.</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 65%;"></div>
+                        </div>
+                        <div class="challenge-meta">
+                            <span>15 days left</span>
+                            <span>65% completed</span>
+                        </div>
+                        <a href="#" class="btn btn-secondary">Join Challenge</a>
+                    </div>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <h3>Summer Strength Program</h3>
+                        <p>Join 1,892 participants</p>
+                    </div>
+                    <div class="challenge-content">
+                        <p>Build strength with this 4-week progressive program.</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 35%;"></div>
+                        </div>
+                        <div class="challenge-meta">
+                            <span>21 days left</span>
+                            <span>35% completed</span>
+                        </div>
+                        <a href="#" class="btn btn-secondary">Join Challenge</a>
+                    </div>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <h3>Flexibility Challenge</h3>
+                        <p>Join 3,125 participants</p>
+                    </div>
+                    <div class="challenge-content">
+                        <p>Improve your flexibility with daily stretching exercises.</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 80%;"></div>
+                        </div>
+                        <div class="challenge-meta">
+                            <span>7 days left</span>
+                            <span>80% completed</span>
+                        </div>
+                        <a href="#" class="btn btn-secondary">Join Challenge</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-dumbbell"></i> FitConnect
+                </div>
+                <div class="footer-links">
+                    <a href="#">About Us</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Help Center</a>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <div class="copyright">
+                    &copy; 2023 FitConnect. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation for progress bars
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress');
+            
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.transition = 'width 1.5s ease-in-out';
+                    bar.style.width = width;
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
