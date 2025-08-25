@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitConnect - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .right-panel {
+            flex: 1;
+            padding: 40px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .welcome-text {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        
+        .app-info {
+            margin-top: 30px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .app-info i {
+            margin: 0 5px;
+            color: #fdbb2d;
+        }
+        
+        h2 {
+            color: #1a2a6c;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #1a2a6c;
+            outline: none;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .links a {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .links a:hover {
+            color: #b21f1f;
+            text-decoration: underline;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: #ddd;
+        }
+        
+        .divider::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: #ddd;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .fb {
+            background: #3b5998;
+        }
+        
+        .google {
+            background: #dd4b39;
+        }
+        
+        .apple {
+            background: #000;
+        }
+        
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                max-width: 450px;
+            }
+            
+            .left-panel {
+                padding: 30px 20px;
+            }
+            
+            .right-panel {
+                padding: 30px 20px;
+            }
+        }
+        
+        .fitness-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .fitness-icons i {
+            font-size: 24px;
+            color: #fdbb2d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo">FitConnect</div>
+            <h1 class="welcome-text">Welcome Back!</h1>
+            <p>Log in to continue your fitness journey, track progress, and connect with your community.</p>
+            
+            <div class="fitness-icons">
+                <i class="fas fa-running"></i>
+                <i class="fas fa-dumbbell"></i>
+                <i class="fas fa-heartbeat"></i>
+                <i class="fas fa-bicycle"></i>
+            </div>
+            
+            <div class="app-info">
+                <p><i class="fas fa-trophy"></i> Track your progress</p>
+                <p><i class="fas fa-users"></i> Connect with friends</p>
+                <p><i class="fas fa-chart-line"></i> Achieve your goals</p>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <h2>Login to Your Account</h2>
+            
+            <form>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="btn-login">Log In</button>
+                
+                <div class="links">
+                    <a href="sign.html">👉 Don't have an account? Sign up here</a>
+                </div>
+                
+                <div class="links">
+                    <a href="forget.html">👉 Forgot your password? Reset it here</a>
+                </div>
+                
+                <div class="divider">or continue with</div>
+                
+                <div class="social-login">
+                    <div class="social-btn fb">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="social-btn google">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <div class="social-btn apple">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Simple form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Simulate successful login
+            alert('Login successful! Redirecting to your dashboard...');
+            // In a real application, you would redirect to the dashboard here
+        });
+    </script>
+</body>
+</html>
