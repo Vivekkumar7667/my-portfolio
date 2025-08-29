@@ -9,6 +9,15 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, orderBy, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        window.firebase = {
+            initializeApp, getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged,
+            getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, orderBy, where, getDocs
+        };
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
@@ -19,22 +28,22 @@
         /* Dark Theme (Default) */
         .dark {
             --bg-body: url('https://images.pexels.com/photos/38136/pexels-photo-38136.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-            --bg-primary: rgba(17, 24, 39, 0.7); /* gray-900/70 */
-            --bg-secondary: rgba(31, 41, 55, 0.8); /* gray-800/80 */
-            --bg-tertiary: rgba(55, 65, 81, 0.9); /* gray-700/90 */
-            --text-primary: #f9fafb; /* gray-50 */
-            --text-secondary: #d1d5db; /* gray-300 */
+            --bg-primary: rgba(17, 24, 39, 0.7);
+            --bg-secondary: rgba(31, 41, 55, 0.8);
+            --bg-tertiary: rgba(55, 65, 81, 0.9);
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
             --border-color: rgba(55, 65, 81, 0.5);
         }
 
         /* Light Theme */
         .light {
             --bg-body: url('https://images.pexels.com/photos/1420440/pexels-photo-1420440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-            --bg-primary: rgba(249, 250, 251, 0.8); /* gray-50/80 */
-            --bg-secondary: rgba(255, 255, 255, 0.9); /* white/90 */
-            --bg-tertiary: #f3f4f6; /* gray-100 */
-            --text-primary: #111827; /* gray-900 */
-            --text-secondary: #4b5563; /* gray-600 */
+            --bg-primary: rgba(249, 250, 251, 0.8);
+            --bg-secondary: rgba(255, 255, 255, 0.9);
+            --bg-tertiary: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
             --border-color: rgba(209, 213, 219, 0.5);
         }
         
@@ -59,6 +68,15 @@
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
+        const { initializeApp, getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, getFirestore, collection, onSnapshot, addDoc, getDocs, deleteDoc, query } = window.firebase;
+
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition;
@@ -73,14 +91,34 @@
         
         const AiIcon = () => ( <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-cyan-400"> <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.5"/> <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0" fill="currentColor" fillOpacity="0.5"/> <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0" fill="currentColor"/> <path d="M12 4.5V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/> <path d="M12 18v1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/> <path d="M19.5 12H18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/> <path d="M6 12H4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/> </svg> );
 
+        const ClearChatModal = ({ isOpen, onClose, onConfirm }) => {
+            if (!isOpen) return null;
+            return (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div className="w-full max-w-sm p-6 rounded-lg shadow-lg" style={{backgroundColor: 'var(--bg-secondary)'}}>
+                        <h3 className="text-lg font-bold mb-4" style={{color: 'var(--text-primary)'}}>Clear Conversation?</h3>
+                        <p className="text-sm mb-6" style={{color: 'var(--text-secondary)'}}>Are you sure you want to clear this conversation? This action cannot be undone.</p>
+                        <div className="flex justify-end gap-2">
+                            <button onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-700/50" style={{color: 'var(--text-primary)'}}>Cancel</button>
+                            <button onClick={onConfirm} className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
         const SettingsModal = ({ isOpen, onClose, settings, updateSettings }) => {
+            const [isClearModalOpen, setIsClearModalOpen] = useState(false);
             if (!isOpen) return null;
 
             const handleClearChat = () => {
-                if(confirm("Are you sure you want to clear this conversation? This action cannot be undone.")){
-                    updateSettings('clearChat');
-                    onClose();
-                }
+                setIsClearModalOpen(true);
+            };
+
+            const confirmClear = () => {
+                updateSettings('clearChat');
+                setIsClearModalOpen(false);
+                onClose();
             };
 
             return (
@@ -116,12 +154,12 @@
                             </div>
                         </div>
                     </div>
+                    <ClearChatModal isOpen={isClearModalOpen} onClose={() => setIsClearModalOpen(false)} onConfirm={confirmClear} />
                 </div>
             );
         };
-
         const App = () => {
-            const [messages, setMessages] = useState([ { text: "Hello! I'm Aaisa AI. Select a language and start chatting. How can I help you today?", sender: 'ai' } ]);
+            const [messages, setMessages] = useState([]);
             const [inputValue, setInputValue] = useState('');
             const [isLoading, setIsLoading] = useState(false);
             const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -131,6 +169,7 @@
             const [selectedImage, setSelectedImage] = useState(null);
             const [language, setLanguage] = useState('en-US');
             const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+            const [userId, setUserId] = useState(null);
             const [settings, setSettings] = useState({
                 theme: 'dark',
                 isSpeechEnabled: true,
@@ -144,10 +183,55 @@
             useEffect(() => {
                 document.documentElement.className = settings.theme;
             }, [settings.theme]);
+            
+            useEffect(() => {
+                // Firebase Auth
+                const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        setUserId(user.uid);
+                    } else {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    }
+                });
+                return () => unsubscribe();
+            }, []);
+
+            useEffect(() => {
+                // Firestore Listener
+                if (!userId) return;
+
+                const messagesCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/messages`);
+                const q = query(messagesCollectionRef);
+
+                const unsubscribe = onSnapshot(q, (snapshot) => {
+                    const fetchedMessages = [];
+                    snapshot.forEach(doc => {
+                        fetchedMessages.push({ ...doc.data(), id: doc.id });
+                    });
+                    const sortedMessages = fetchedMessages.sort((a, b) => a.timestamp.toDate() - b.timestamp.toDate());
+                    setMessages(sortedMessages);
+                }, (error) => {
+                    console.error("Error fetching messages: ", error);
+                });
+
+                return () => unsubscribe();
+            }, [userId]);
 
             const updateSettings = (key, value) => {
                 if (key === 'clearChat') {
-                    setMessages([{ text: "Conversation cleared. How can I help you now?", sender: 'ai' }]);
+                    if (!userId) return;
+                    const messagesCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/messages`);
+                    getDocs(messagesCollectionRef).then(snapshot => {
+                        snapshot.docs.forEach(doc => {
+                            deleteDoc(doc.ref);
+                        });
+                    }).catch(err => {
+                        console.error("Failed to clear chat: ", err);
+                    });
                 } else {
                     setSettings(prev => ({ ...prev, [key]: value }));
                 }
@@ -197,25 +281,43 @@
 
             const handleSendMessage = async () => {
                 const text = inputValue.trim();
-                if ((text === '' && !selectedImage) || isLoading) return;
+                if ((text === '' && !selectedImage) || isLoading || !userId) return;
 
-                const userMessage = { text, sender: 'user', image: selectedImage ? selectedImage.dataUrl : null };
-                setMessages(prev => [...prev, userMessage]);
-                setInputValue('');
+                const userMessageData = { 
+                    text: text, 
+                    sender: 'user', 
+                    timestamp: new Date(), 
+                    image: selectedImage ? selectedImage.dataUrl : null 
+                };
+                
+                // Add the user message to Firestore
+                try {
+                    await addDoc(collection(db, `artifacts/${appId}/users/${userId}/messages`), userMessageData);
+                } catch (e) {
+                    console.error("Error adding user message to Firestore: ", e);
+                }
+
                 setIsLoading(true);
+                setSelectedImage(null);
+                setInputValue('');
+                if(fileInputRef.current) fileInputRef.current.value = "";
 
                 try {
                     const parts = [];
-                    if (text) parts.push({ text: `Please respond in the same language as this query: "${text}"` });
                     if (selectedImage) {
                         const base64Data = selectedImage.dataUrl.split(',')[1];
                         parts.push({ inlineData: { mimeType: selectedImage.mimeType, data: base64Data } });
-                        if(!text) parts.push({text: `What is in this image? Respond in ${languages.find(l => l.code === language).name}.`});
+                    }
+                    // Add text after image if it exists, or as the only part
+                    if (text) {
+                      parts.push({ text: `Please respond in the same language as this query: "${text}"` });
+                    } else if (selectedImage) {
+                      parts.push({text: `What is in this image? Respond in ${languages.find(l => l.code === language).name}.`});
                     }
 
                     const payload = { contents: [{ role: "user", parts: parts }] };
                     const apiKey = "";
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
                     const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                     if (!response.ok) throw new Error(`API error: ${response.statusText}`);
@@ -224,18 +326,21 @@
                     let aiText = "Sorry, I couldn't get a response. Please try again.";
                     if (result.candidates && result.candidates[0]?.content?.parts?.[0]) aiText = result.candidates[0].content.parts[0].text;
 
-                    const aiMessage = { text: aiText, sender: 'ai' };
-                    setMessages(prev => [...prev, aiMessage]);
+                    const aiMessageData = { 
+                        text: aiText, 
+                        sender: 'ai', 
+                        timestamp: new Date()
+                    };
+                    
+                    await addDoc(collection(db, `artifacts/${appId}/users/${userId}/messages`), aiMessageData);
                     speakText(aiText);
 
                 } catch (error) {
                     console.error("Failed to fetch AI response:", error);
-                    const errorMessage = { text: `Error: ${error.message}.`, sender: 'ai', isError: true };
-                    setMessages(prev => [...prev, errorMessage]);
+                    const errorMessageData = { text: `Error: ${error.message}.`, sender: 'ai', timestamp: new Date(), isError: true };
+                    await addDoc(collection(db, `artifacts/${appId}/users/${userId}/messages`), errorMessageData);
                 } finally {
                     setIsLoading(false);
-                    setSelectedImage(null);
-                    if(fileInputRef.current) fileInputRef.current.value = "";
                 }
             };
 
@@ -246,12 +351,14 @@
                 <div className="flex h-screen" style={{color: 'var(--text-primary)'}}>
                     <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} settings={settings} updateSettings={updateSettings} />
                     <div className={`flex flex-col backdrop-blur-sm transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-0'} overflow-hidden`} style={{backgroundColor: 'var(--bg-primary)'}}>
-                        <div className="p-4 flex justify-between items-center border-b" style={{borderColor: 'var(--border-color)'}}><h2 className="text-lg font-semibold">History</h2></div>
-                        <div className="p-2"><button className="w-full text-left p-2 rounded-md hover:bg-gray-700/80 flex items-center gap-2"><i className="fas fa-plus"></i>New Chat</button></div>
+                        <div className="p-4 flex justify-between items-center border-b" style={{borderColor: 'var(--border-color)'}}>
+                            <h2 className="text-lg font-semibold">History</h2>
+                        </div>
+                        <div className="p-2">
+                             <button onClick={() => updateSettings('clearChat')} className="w-full text-left p-2 rounded-md hover:bg-gray-700/80 flex items-center gap-2"><i className="fas fa-plus"></i>New Chat</button>
+                        </div>
                         <div className="flex-1 p-2 space-y-2 overflow-y-auto sidebar-scroll">
-                            <div className="p-2 rounded-md hover:bg-gray-700/80 cursor-pointer text-sm truncate">What is the capital of France?</div>
-                            <div className="p-2 rounded-md hover:bg-gray-700/80 cursor-pointer text-sm truncate">How to make a React app</div>
-                            <div className="p-2 rounded-md bg-gray-700/90 cursor-pointer text-sm truncate">Nature background ideas</div>
+                            <p className="text-xs text-gray-500 truncate mt-4 px-2">User ID: <span className="text-xs break-all">{userId || 'Loading...'}</span></p>
                         </div>
                     </div>
 
@@ -269,7 +376,7 @@
                                 </div>
                                 <div className="relative" ref={menuRef}>
                                     <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2" style={{color: 'var(--text-secondary)'}}><i className="fas fa-ellipsis-v text-xl"></i></button>
-                                    {isMenuOpen && ( <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 z-50" style={{backgroundColor: 'var(--bg-secondary)'}}> <a href="#" onClick={(e) => { e.preventDefault(); setIsSettingsOpen(true); setIsMenuOpen(false); }} className="block px-4 py-2 text-sm hover:bg-gray-700/80" style={{color: 'var(--text-primary)'}}>Settings</a> <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-700/80" style={{color: 'var(--text-primary)'}}>About</a> <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-700/80" style={{color: 'var(--text-primary)'}}>Themes</a> <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-700/80" style={{color: 'var(--text-primary)'}}>Login</a> </div> )}
+                                    {isMenuOpen && ( <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 z-50" style={{backgroundColor: 'var(--bg-secondary)'}}> <a href="#" onClick={(e) => { e.preventDefault(); setIsSettingsOpen(true); setIsMenuOpen(false); }} className="block px-4 py-2 text-sm hover:bg-gray-700/80" style={{color: 'var(--text-primary)'}}>Settings</a> <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-700/80" style={{color: 'var(--text-primary)'}}>About</a> <a href="#" onClick={(e) => {e.preventDefault(); setIsMenuOpen(false); setIsSettingsOpen(true);}} className="block px-4 py-2 text-sm hover:bg-gray-700/80" style={{color: 'var(--text-primary)'}}>Themes</a> </div> )}
                                 </div>
                             </div>
                         </header>
