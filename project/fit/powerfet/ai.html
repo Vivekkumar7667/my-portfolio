@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fitness Coach | Personalized Workout & Nutrition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1F2937',
+                        light: '#F9FAFB',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-dark">FitAI</span>
+            </a>
+            
+            <div class="hidden md:flex space-x-10">
+                <a href="#" class="text-gray-600 hover:text-primary transition">Home</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition">Features</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition">Pricing</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition">About</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <a href="#" class="text-gray-600 hover:text-primary transition hidden md:block">
+                    <i class="fas fa-user"></i> Log In
+                </a>
+                <button class="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition">
+                    Sign Up
+                </button>
+                
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-16 md:py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark mb-6 leading-tight">
+                    Your AI Fitness Coach
+                </h1>
+                <p class="text-lg text-gray-600 mb-8 max-w-lg">
+                    Get personalized workout and nutrition guidance powered by artificial intelligence. Achieve your fitness goals faster with plans tailored specifically for you.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="bg-primary hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:-translate-y-1">
+                        Start with AI Coach
+                    </button>
+                    <button class="border border-primary text-primary hover:bg-blue-50 font-semibold py-3 px-8 rounded-lg transition">
+                        <i class="fas fa-play-circle mr-2"></i> Watch Demo
+                    </button>
+                </div>
+                <div class="mt-10 flex items-center space-x-2 text-gray-500">
+                    <div class="flex items-center">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star-half-alt text-yellow-400"></i>
+                    </div>
+                    <span>4.8 from 2,458+ fitness enthusiasts</span>
+                </div>
+            </div>
+            
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative">
+                    <div class="w-80 h-80 bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-lg">Your AI Coach</h3>
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                <i class="fas fa-robot text-white"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-lg p-4 mb-4">
+                            <p class="text-sm">Hello! I'm your AI Coach. Let's create a personalized plan based on your goals.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <div class="bg-white border border-gray-200 rounded-lg p-3 text-center">
+                                <i class="fas fa-running text-primary text-xl mb-2"></i>
+                                <p class="text-xs font-medium">Workout Plan</p>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-3 text-center">
+                                <i class="fas fa-apple-alt text-secondary text-xl mb-2"></i>
+                                <p class="text-xs font-medium">Nutrition Plan</p>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-3 text-center">
+                                <i class="fas fa-heartbeat text-red-500 text-xl mb-2"></i>
+                                <p class="text-xs font-medium">Recovery</p>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-3 text-center">
+                                <i class="fas fa-chart-line text-yellow-500 text-xl mb-2"></i>
+                                <p class="text-xs font-medium">Progress</p>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-primary text-white py-2 rounded-lg font-medium text-sm hover:bg-blue-600 transition">
+                            Generate Your Plan
+                        </button>
+                    </div>
+                    
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-secondary rounded-2xl -z-10"></div>
+                    <div class="absolute -top-6 -right-6 w-24 h-24 bg-yellow-400 rounded-2xl -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">How It Works</h2>
+                <p class="text-gray-600">Our AI technology creates a completely personalized fitness journey just for you</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-light rounded-2xl p-6 card-hover">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-clipboard-list text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Assessment</h3>
+                    <p class="text-gray-600">Tell us about your goals, fitness level, and preferences through our smart assessment.</p>
+                </div>
+                
+                <div class="bg-light rounded-2xl p-6 card-hover">
+                    <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-brain text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">AI Analysis</h3>
+                    <p class="text-gray-600">Our AI analyzes your data to create optimal workout and nutrition plans.</p>
+                </div>
+                
+                <div class="bg-light rounded-2xl p-6 card-hover">
+                    <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Track & Adapt</h3>
+                    <p class="text-gray-600">Your plan evolves as you progress, ensuring continuous results.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workout Recommendations -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Personalized Workouts</h2>
+                <p class="text-gray-600">AI-generated workouts tailored to your goals, equipment, and fitness level</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md card-hover">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80')">
+                        <div class="h-full bg-gradient-to-t from-black to-transparent opacity-70 flex items-end">
+                            <div class="p-6">
+                                <span class="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">Strength</span>
+                                <h3 class="text-xl font-bold text-white mt-2">Upper Body Strength</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center text-gray-500">
+                                <i class="far fa-clock mr-2"></i>
+                                <span>45 mins</span>
+                            </div>
+                            <div class="flex items-center text-gray-500">
+                                <i class="fas fa-fire mr-2"></i>
+                                <span>320 cal</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Build muscle and increase strength with this targeted upper body workout.</p>
+                        <button class="w-full bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2 rounded-lg transition">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md card-hover">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1534258936925-c58bed479fcb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1031&q=80')">
+                        <div class="h-full bg-gradient-to-t from-black to-transparent opacity-70 flex items-end">
+                            <div class="p-6">
+                                <span class="bg-secondary text-white text-xs font-medium px-3 py-1 rounded-full">Cardio</span>
+                                <h3 class="text-xl font-bold text-white mt-2">HIIT Blast</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center text-gray-500">
+                                <i class="far fa-clock mr-2"></i>
+                                <span>30 mins</span>
+                            </div>
+                            <div class="flex items-center text-gray-500">
+                                <i class="fas fa-fire mr-2"></i>
+                                <span>480 cal</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">High-intensity interval training to maximize fat burning and endurance.</p>
+                        <button class="w-full bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2 rounded-lg transition">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md card-hover">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1020&q=80')">
+                        <div class="h-full bg-gradient-to-t from-black to-transparent opacity-70 flex items-end">
+                            <div class="p-6">
+                                <span class="bg-purple-500 text-white text-xs font-medium px-3 py-1 rounded-full">Flexibility</span>
+                                <h3 class="text-xl font-bold text-white mt-2">Yoga Flow</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center text-gray-500">
+                                <i class="far fa-clock mr-2"></i>
+                                <span>60 mins</span>
+                            </div>
+                            <div class="flex items-center text-gray-500">
+                                <i class="fas fa-fire mr-2"></i>
+                                <span>180 cal</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Improve flexibility, balance, and mental focus with this yoga sequence.</p>
+                        <button class="w-full bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2 rounded-lg transition">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="bg-white text-primary border border-primary hover:bg-blue-50 font-semibold py-3 px-8 rounded-lg transition">
+                    View All Workouts
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nutrition Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Smart Nutrition Plans</h2>
+                <p class="text-gray-600">Personalized meal recommendations based on your dietary preferences and goals</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 text-white">
+                    <h3 class="text-2xl font-bold mb-4">Custom Meal Plans</h3>
+                    <p class="mb-6">Get AI-generated meal plans that fit your calorie needs, dietary restrictions, and food preferences.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle mr-3"></i>
+                            <span>Calorie-controlled portions</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle mr-3"></i>
+                            <span>Vegetarian, vegan, and gluten-free options</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle mr-3"></i>
+                            <span>Grocery shopping lists</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gradient-to-r from-secondary to-green-500 rounded-2xl p-8 text-white">
+                    <h3 class="text-2xl font-bold mb-4">Macro Tracking</h3>
+                    <p class="mb-6">Easily track your protein, carbs, and fat intake with our simple monitoring tools.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle mr-3"></i>
+                            <span>Smart food logging</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle mr-3"></i>
+                            <span>Barcode scanner for foods</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle mr-3"></i>
+                            <span>Progress insights</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-light rounded-2xl p-6">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-2/3 mb-6 md:mb-0">
+                        <h3 class="text-2xl font-bold mb-3">Ready to transform your health?</h3>
+                        <p class="text-gray-600">Join thousands of users who have achieved their fitness goals with our AI Coach</p>
+                    </div>
+                    <div class="md:w-1/3 flex justify-center md:justify-end">
+                        <button class="bg-primary hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg transition">
+                            Start Your Journey
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Success Stories</h2>
+                <p class="text-gray-600">Hear from people who have transformed their health with our AI Coach</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+                        <div>
+                            <h4 class="font-semibold">Sarah Johnson</h4>
+                            <p class="text-gray-500 text-sm">Lost 28 lbs in 4 months</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"The personalized workouts and nutrition plans made it so easy to stay consistent. I've never felt better!"</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+                        <div>
+                            <h4 class="font-semibold">Michael Chen</h4>
+                            <p class="text-gray-500 text-sm">Gained 15 lbs muscle in 3 months</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"As a beginner, I needed guidance. The AI Coach adapted to my progress and helped me build muscle effectively."</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+                        <div>
+                            <h4 class="font-semibold">Jessica Williams</h4>
+                            <p class="text-gray-500 text-sm">Ran first marathon after 6 months</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"The adaptive training plan prepared me perfectly for my marathon. I couldn't have done it without my AI Coach!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-dark text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Fitness Journey?</h2>
+            <p class="text-gray-300 max-w-2xl mx-auto mb-8">Join thousands of users achieving their fitness goals with our AI-powered personal coach</p>
+            <button class="bg-primary hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg transition transform hover:-translate-y-1 mr-4">
+                Start with AI Coach
+            </button>
+            <button class="bg-transparent hover:bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg border border-gray-600 transition">
+                Learn More
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                            <i class="fas fa-dumbbell text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">FitAI</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">The future of personalized fitness coaching powered by artificial intelligence.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Press</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Resources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Partners</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Community</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Contact</h4>
+                    <ul class="space-y-3">
+                        <li class="text-gray-400"><i class="fas fa-envelope mr-2"></i> support@fitai.com</li>
+                        <li class="text-gray-400"><i class="fas fa-phone mr-2"></i> +1 (555) 123-4567</li>
+                        <li class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i> San Francisco, CA</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© 2023 FitAI. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

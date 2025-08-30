@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaHub | Upload & Share</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        
+        .logo i {
+            font-size: 32px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-weight: 700;
+            font-size: 28px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover, 
+        nav ul li a.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .auth-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+        
+        .signin-btn {
+            background: transparent;
+            color: white;
+        }
+        
+        .signup-btn {
+            background: white;
+            color: var(--primary);
+            border: 2px solid white;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .upload-box {
+            text-align: center;
+        }
+        
+        .upload-area {
+            border: 3px dashed var(--primary);
+            border-radius: 12px;
+            padding: 40px 20px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            background: rgba(106, 17, 203, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-area h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #444;
+        }
+        
+        .upload-area p {
+            color: #777;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #444;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .media-item {
+            border-radius: 10px;
+            overflow: hidden;
+            height: 150px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .media-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .media-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .media-item .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .media-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Auth Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .auth-form {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                justify-content: center;
+            }
+            
+            .logo {
+                justify-content: center;
+            }
+            
+            .auth-buttons {
+                margin-top: 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .media-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-photo-video"></i>
+                <h1>MediaHub</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Explore</a></li>
+                    <li><a href="#">My Uploads</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="auth-btn signin-btn" id="signinBtn">Sign In</button>
+                <button class="auth-btn signup-btn" id="signupBtn">Sign Up</button>
+            </div>
+            <div class="user-menu" style="display: none;">
+                <div class="user-avatar">JD</div>
+                <span>John Doe</span>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="card upload-box">
+                <h2 class="section-title">Upload Your Media</h2>
+                <div class="upload-area" id="dropArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drag & Drop</h3>
+                    <p>Your images or videos here</p>
+                    <p>OR</p>
+                    <input type="file" id="fileInput" multiple style="display: none;" accept="image/*, video/*">
+                    <button class="btn" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-upload"></i> Browse Files
+                    </button>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="uploadProgress"></div>
+                </div>
+                <div class="upload-info">
+                    <p>Supported formats: JPG, PNG, GIF, MP4, MOV</p>
+                    <p>Max file size: 100MB</p>
+                </div>
+                <div class="media-actions">
+                    <button class="btn btn-success" id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    <button class="btn btn-danger" id="deleteBtn">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="section-title">Recent Uploads</h2>
+                <p>Your recently uploaded media files</p>
+                
+                <div class="media-grid">
+                    <div class="media-item">
+                        <img src="https://picsum.photos/id/1/300/300" alt="Uploaded image">
+                    </div>
+                    <div class="media-item">
+                        <img src="https://picsum.photos/id/10/300/300" alt="Uploaded image">
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <img src="https://picsum.photos/id/100/300/300" alt="Uploaded image">
+                    </div>
+                    <div class="media-item">
+                        <img src="https://picsum.photos/id/1000/300/300" alt="Uploaded image">
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <img src="https://picsum.photos/id/101/300/300" alt="Uploaded image">
+                    </div>
+                    <div class="media-item">
+                        <img src="https://picsum.photos/id/102/300/300" alt="Uploaded image">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sign In Modal -->
+        <div class="modal" id="signinModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeSignin">&times;</span>
+                <h2 class="section-title">Sign In</h2>
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password">
+                    </div>
+                    <button class="btn" style="width: 100%;">Sign In</button>
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" id="gotoSignup">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sign Up Modal -->
+        <div class="modal" id="signupModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeSignup">&times;</span>
+                <h2 class="section-title">Create Account</h2>
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirm" placeholder="Confirm your password">
+                    </div>
+                    <button class="btn" style="width: 100%;">Create Account</button>
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="#" id="gotoSignin">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 MediaHub. All rights reserved.</p>
+            <p>Designed with <i class="fas fa-heart" style="color: #ff3e6c;"></i> for content creators</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const signinBtn = document.getElementById('signinBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const signinModal = document.getElementById('signinModal');
+        const signupModal = document.getElementById('signupModal');
+        const closeSignin = document.getElementById('closeSignin');
+        const closeSignup = document.getElementById('closeSignup');
+        const gotoSignup = document.getElementById('gotoSignup');
+        const gotoSignin = document.getElementById('gotoSignin');
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const shareBtn = document.getElementById('shareBtn');
+        const deleteBtn = document.getElementById('deleteBtn');
+
+        // Auth Modal Toggles
+        signinBtn.addEventListener('click', () => {
+            signinModal.style.display = 'flex';
+        });
+
+        signupBtn.addEventListener('click', () => {
+            signupModal.style.display = 'flex';
+        });
+
+        closeSignin.addEventListener('click', () => {
+            signinModal.style.display = 'none';
+        });
+
+        closeSignup.addEventListener('click', () => {
+            signupModal.style.display = 'none';
+        });
+
+        gotoSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            signinModal.style.display = 'none';
+            signupModal.style.display = 'flex';
+        });
+
+        gotoSignin.addEventListener('click', (e) => {
+            e.preventDefault();
+            signupModal.style.display = 'none';
+            signinModal.style.display = 'flex';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === signinModal) {
+                signinModal.style.display = 'none';
+            }
+            if (e.target === signupModal) {
+                signupModal.style.display = 'none';
+            }
+        });
+
+        // Drag and drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropArea.style.borderColor = '#2575fc';
+            dropArea.style.backgroundColor = 'rgba(37, 117, 252, 0.1)';
+        }
+        
+        function unhighlight() {
+            dropArea.style.borderColor = '#6a11cb';
+            dropArea.style.backgroundColor = 'transparent';
+        }
+        
+        dropArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+        
+        function handleFiles(files) {
+            if (files.length > 0) {
+                // Simulate upload progress
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 5;
+                    uploadProgress.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        alert(`Upload complete! ${files.length} file(s) uploaded successfully.`);
+                    }
+                }, 100);
+            }
+        }
+        
+        // File input change event
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                handleFiles(this.files);
+            }
+        });
+        
+        // Share button functionality
+        shareBtn.addEventListener('click', () => {
+            alert('Share functionality would be implemented here!');
+        });
+        
+        // Delete button functionality
+        deleteBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to delete selected items?')) {
+                alert('Delete functionality would be implemented here!');
+            }
+        });
+
+        // Simulate user login (for demo purposes)
+        document.querySelector('.auth-form button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.auth-buttons').style.display = 'none';
+            document.querySelector('.user-menu').style.display = 'flex';
+            signinModal.style.display = 'none';
+            signupModal.style.display = 'none';
+            alert('Login successful!');
+        });
+    </script>
+</body>
+</html>

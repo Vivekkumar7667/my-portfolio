@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "name": "Yoga Mat",
+    "price": 499,
+    "category": "Fitness",
+    "image": "https://example.com/yogamat.jpg",
+    "description": "High quality yoga mat for daily workouts.",
+    "stock": 20
+  }
+]

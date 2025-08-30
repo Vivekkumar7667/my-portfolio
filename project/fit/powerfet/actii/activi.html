@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack Pro - Your Complete Fitness Solution</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+        }
+        
+        body {
+            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .dark-mode {
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+        
+        .dark-mode .card {
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+            border-color: #333;
+        }
+        
+        .dark-mode .navbar {
+            background-color: #1a1a1a;
+            border-color: #333;
+        }
+        
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            transition: width 1s ease-in-out;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        
+        .dashboard-stat {
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+        }
+        
+        .goal-complete {
+            background: linear-gradient(45deg, #4361ee, #3a0ca3);
+            color: white;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-item:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="navbar bg-white shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center">
+            <div class="text-2xl font-bold text-blue-600 mr-2"><i class="fas fa-heartbeat"></i></div>
+            <div class="text-xl font-bold">FitTrack<span class="text-blue-600">Pro</span></div>
+        </div>
+        
+        <div class="hidden md:flex space-x-8">
+            <a href="#" class="nav-item text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
+            <a href="#activity" class="nav-item text-gray-700 hover:text-blue-600 font-medium">Activity</a>
+            <a href="#workout" class="nav-item text-gray-700 hover:text-blue-600 font-medium">Workout</a>
+            <a href="#nutrition" class="nav-item text-gray-700 hover:text-blue-600 font-medium">Nutrition</a>
+            <a href="#progress" class="nav-item text-gray-700 hover:text-blue-600 font-medium">Progress</a>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
+                <i class="fas fa-moon text-gray-700"></i>
+            </button>
+            <div class="relative">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="User" class="w-10 h-10 rounded-full cursor-pointer">
+            </div>
+            <button class="md:hidden text-gray-700" id="menu-btn">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu hidden fixed top-16 left-0 w-full bg-white shadow-lg py-4 z-40" id="mobile-menu">
+        <a href="#" class="block py-3 px-6 text-gray-700 hover:bg-blue-50">Dashboard</a>
+        <a href="#activity" class="block py-3 px-6 text-gray-700 hover:bg-blue-50">Activity</a>
+        <a href="#workout" class="block py-3 px-6 text-gray-700 hover:bg-blue-50">Workout</a>
+        <a href="#nutrition" class="block py-3 px-6 text-gray-700 hover:bg-blue-50">Nutrition</a>
+        <a href="#progress" class="block py-3 px-6 text-gray-700 hover:bg-blue-50">Progress</a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Dashboard Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome back, Alex!</h1>
+            <p class="text-gray-600">Here's your fitness overview for today, August 20, 2023</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="card bg-white p-6 shadow rounded-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-gray-600">Steps</h3>
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                        <i class="fas fa-walking text-blue-600"></i>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold">8,542</div>
+                <div class="text-green-500 flex items-center mt-2">
+                    <i class="fas fa-arrow-up mr-1"></i>
+                    <span>12% from yesterday</span>
+                </div>
+                <div class="mt-4">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar bg-blue-600 h-2 rounded-full" style="width: 68%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Goal: 12,500 steps</div>
+                </div>
+            </div>
+
+            <div class="card bg-white p-6 shadow rounded-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-gray-600">Calories</h3>
+                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                        <i class="fas fa-fire text-red-600"></i>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold">2,380</div>
+                <div class="text-green-500 flex items-center mt-2">
+                    <i class="fas fa-arrow-up mr-1"></i>
+                    <span>420 remaining</span>
+                </div>
+                <div class="mt-4">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar bg-red-600 h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Goal: 2,800 calories</div>
+                </div>
+            </div>
+
+            <div class="card bg-white p-6 shadow rounded-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-gray-600">Active Minutes</h3>
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                        <i class="fas fa-clock text-green-600"></i>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold">47</div>
+                <div class="text-green-500 flex items-center mt-2">
+                    <i class="fas fa-check-circle mr-1"></i>
+                    <span>Goal achieved!</span>
+                </div>
+                <div class="mt-4">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Goal: 45 minutes</div>
+                </div>
+            </div>
+
+            <div class="card bg-white p-6 shadow rounded-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-gray-600">Sleep</h3>
+                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                        <i class="fas fa-bed text-purple-600"></i>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold">7h 28m</div>
+                <div class="text-red-500 flex items-center mt-2">
+                    <i class="fas fa-arrow-down mr-1"></i>
+                    <span>12% less than average</span>
+                </div>
+                <div class="mt-4">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar bg-purple-600 h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Goal: 8 hours</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <!-- Activity Chart -->
+            <div class="lg:col-span-2 card bg-white p-6 shadow rounded-lg">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Weekly Activity</h2>
+                <canvas id="activityChart" height="250"></canvas>
+            </div>
+
+            <!-- Goals -->
+            <div class="card bg-white p-6 shadow rounded-lg">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Today's Goals</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center p-4 bg-blue-50 rounded-lg">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                            <i class="fas fa-walking text-blue-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-medium">10,000 steps</h3>
+                            <p class="text-sm text-gray-600">68% completed</p>
+                        </div>
+                        <div class="text-blue-600">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center p-4 bg-green-50 rounded-lg goal-complete">
+                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                            <i class="fas fa-dumbbell text-green-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-medium">Strength training</h3>
+                            <p class="text-sm">Completed</p>
+                        </div>
+                        <div class="text-green-600">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center p-4 bg-yellow-50 rounded-lg">
+                        <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+                            <i class="fas fa-glass-whiskey text-yellow-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-medium">Drink 2L water</h3>
+                            <p class="text-sm text-gray-600">50% completed</p>
+                        </div>
+                        <div class="text-yellow-600">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center p-4 bg-purple-50 rounded-lg">
+                        <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                            <i class="fas fa-apple-alt text-purple-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-medium">Track meals</h3>
+                            <p class="text-sm text-gray-600">2 of 3 meals tracked</p>
+                        </div>
+                        <div class="text-purple-600">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="mt-6 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-300">
+                    <i class="fas fa-plus mr-2"></i>Add New Goal
+                </button>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-center mb-10 text-gray-800">Track Your Fitness Journey</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Activity Tracking -->
+                <div id="activity" class="card bg-white p-6 shadow rounded-lg text-center cursor-pointer hover:shadow-lg transition duration-300">
+                    <div class="feature-icon bg-blue-100 text-blue-600 mx-auto">
+                        <i class="fas fa-walking text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Activity Tracking</h3>
+                    <p class="text-gray-600 mb-4">Monitor steps, distance, calories burned, and active minutes throughout your day.</p>
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition duration-300">
+                        Explore
+                    </button>
+                </div>
+                
+                <!-- Workout Plans -->
+                <div id="workout" class="card bg-white p-6 shadow rounded-lg text-center cursor-pointer hover:shadow-lg transition duration-300">
+                    <div class="feature-icon bg-red-100 text-red-600 mx-auto">
+                        <i class="fas fa-dumbbell text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Workout Plans</h3>
+                    <p class="text-gray-600 mb-4">Customized workout routines for strength, cardio, flexibility, and more.</p>
+                    <button class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition duration-300">
+                        <a href="explore/ex.html">Explore</a>
+                    </button>
+                    
+                </div>
+                
+                <!-- Nutrition Tracker -->
+                <div id="nutrition" class="card bg-white p-6 shadow rounded-lg text-center cursor-pointer hover:shadow-lg transition duration-300">
+                    <div class="feature-icon bg-green-100 text-green-600 mx-auto">
+                        <i class="fas fa-apple-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Nutrition Tracker</h3>
+                    <p class="text-gray-600 mb-4">Log meals, track macros, count calories, and monitor water intake.</p>
+                    <button class="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition duration-300">
+                        Explore
+                    </button>
+                </div>
+                
+                <!-- Progress Dashboard -->
+                <div id="progress" class="card bg-white p-6 shadow rounded-lg text-center cursor-pointer hover:shadow-lg transition duration-300">
+                    <div class="feature-icon bg-purple-100 text-purple-600 mx-auto">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Progress Dashboard</h3>
+                    <p class="text-gray-600 mb-4">Visualize your progress with charts, graphs, and achievement badges.</p>
+                    <button class="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition duration-300">
+                        Explore
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Recent Activities</h2>
+            
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activity</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Calories</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                        <i class="fas fa-running text-blue-600"></i>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-900">Morning Run</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">38 min</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">427 cal</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today, 7:30 AM</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
+                                        <i class="fas fa-dumbbell text-red-600"></i>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-900">Strength Training</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">55 min</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">380 cal</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Yesterday, 6:15 PM</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                        <i class="fas fa-bicycle text-green-600"></i>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-900">Cycling</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 hr 20 min</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">620 cal</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Aug 18, 5:40 PM</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                        <i class="fas fa-swimmer text-purple-600"></i>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-900">Swimming</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">45 min</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">410 cal</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Aug 17, 7:00 AM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">FitTrack<span class="text-blue-400">Pro</span></h3>
+                    <p class="text-gray-400">Your all-in-one fitness tracking solution to help you achieve your health and wellness goals.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Features</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Activity Tracking</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Workout Plans</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Nutrition Tracking</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Progress Analytics</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Community</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Subscribe</h4>
+                    <p class="text-gray-400 mb-4">Subscribe to our newsletter for the latest updates and tips.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 w-full rounded-l-lg focus:outline-none">
+                        <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400">© 2023 FitTrackPro. All rights reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Activity Chart
+        const ctx = document.getElementById('activityChart').getContext('2d');
+        const activityChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'Steps',
+                        data: [8452, 10234, 7865, 9741, 7321, 11245, 8954],
+                        backgroundColor: '#4361ee',
+                        borderColor: '#4361ee',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Calories',
+                        data: [2100, 2450, 1950, 2300, 1850, 2650, 2200],
+                        backgroundColor: '#f72585',
+                        borderColor: '#f72585',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Animate progress bars on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

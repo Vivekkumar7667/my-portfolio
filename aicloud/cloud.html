@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VK Cloud - Your Secure Cloud Storage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6200ea;
+            --secondary: #03dac6;
+            --accent: #ff0266;
+            --warning: #ffde03;
+            --dark-bg: #121212;
+            --dark-surface: #1e1e1e;
+            --dark-text: #e8eaed;
+            --light-bg: #f8f9fa;
+            --light-surface: #ffffff;
+            --light-text: #202124;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+            --transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        }
+
+        .dark-mode {
+            --bg: var(--dark-bg);
+            --surface: var(--dark-surface);
+            --text: var(--dark-text);
+            --border: #333333;
+        }
+
+        .light-mode {
+            --bg: var(--light-bg);
+            --surface: var(--light-surface);
+            --text: var(--light-text);
+            --border: #dadce0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: rgba(var(--surface-rgb), 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .container {
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--surface);
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            background-color: var(--bg);
+            color: var(--text);
+            font-size: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #5f6368;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        .user-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            margin-top: 20px;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: calc(100vh - 160px);
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .sidebar-menu li {
+            padding: 14px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+        }
+
+        .sidebar-menu li:hover, .sidebar-menu li.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .storage-info {
+            margin-top: 30px;
+            background-color: var(--bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .storage-info h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upgrade-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--border);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 25%;
+            border-radius: 5px;
+        }
+
+        .storage-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            flex: 1;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        /* File Grid */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .file-card {
+            background-color: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .file-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+
+        .file-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .file-icon.pdf {
+            color: #e74c3c;
+        }
+
+        .file-icon.image {
+            color: #3498db;
+        }
+
+        .file-icon.video {
+            color: #9b59b6;
+        }
+
+        .file-icon.audio {
+            color: #2ecc71;
+        }
+
+        .file-name {
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+        }
+
+        .file-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            color: #5f6368;
+            font-size: 13px;
+        }
+
+        .file-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .file-card:hover .file-actions {
+            opacity: 1;
+        }
+
+        .file-action-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--border-radius);
+            padding: 50px;
+            text-align: center;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: var(--bg);
+        }
+
+        .upload-area i {
+            font-size: 56px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(98, 0, 234, 0.05);
+            transform: scale(1.01);
+        }
+
+        /* Background Options */
+        .background-options {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .bg-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        .bg-btn.active {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+
+        .bg-1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .bg-2 {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .bg-3 {
+            background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%);
+        }
+
+        .bg-4 {
+            background: linear-gradient(135deg, #f46b45 0%, #eea849 100%);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1000px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+            }
+            
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-bar {
+                width: 100%;
+                max-width: 100%;
+                margin: 15px 0;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .file-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .upload-area {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .background-options {
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .bg-btn {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="app-container">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <span>VK Cloud</span>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search files...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="user-actions">
+                        <button class="theme-toggle" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <div class="user-profile">VK</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-plus"></i> New
+                    </button>
+                    
+                    <ul class="sidebar-menu">
+                        <li class="active"><i class="fas fa-home"></i> Home</li>
+                        <li><i class="fas fa-clock"></i> Recent</li>
+                        <li><i class="fas fa-star"></i> Starred</li>
+                        <li><i class="fas fa-trash"></i> Trash</li>
+                        <li><i class="fas fa-folder"></i> Folders</li>
+                        <li><i class="fas fa-share-alt"></i> Shared</li>
+                        <li><i class="fas fa-history"></i> Activity</li>
+                        <li><i class="fas fa-cog"></i> Settings</li>
+                    </ul>
+                    
+                    <div class="storage-info">
+                        <h3>
+                            Storage
+                            <button class="upgrade-btn">Upgrade</button>
+                        </h3>
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="storage-details">
+                            <span>12.5 GB used</span>
+                            <span>50 GB</span>
+                        </div>
+                    </div>
+                </aside>
+                
+                <main class="dashboard">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">My Files</h1>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-sort"></i> Sort
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drag and drop files here to upload</h3>
+                        <p>Or click to browse your files</p>
+                    </div>
+                    
+                    <div class="file-grid">
+                        <div class="file-card">
+                            <div class="file-actions">
+                                <div class="file-action-btn"><i class="fas fa-download"></i></div>
+                                <div class="file-action-btn"><i class="fas fa-share-alt"></i></div>
+                            </div>
+                            <div class="file-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <h3 class="file-name">Project Report.pdf</h3>
+                            <div class="file-details">
+                                <span>2.5 MB</span>
+                                <span>Yesterday</span>
+                            </div>
+                        </div>
+                        
+                        <div class="file-card">
+                            <div class="file-actions">
+                                <div class="file-action-btn"><i class="fas fa-download"></i></div>
+                                <div class="file-action-btn"><i class="fas fa-share-alt"></i></div>
+                            </div>
+                            <div class="file-icon image">
+                                <i class="fas fa-file-image"></i>
+                            </div>
+                            <h3 class="file-name">Vacation Photo.jpg</h3>
+                            <div class="file-details">
+                                <span>4.2 MB</span>
+                                <span>2 days ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="file-card">
+                            <div class="file-actions">
+                                <div class="file-action-btn"><i class="fas fa-download"></i></div>
+                                <div class="file-action-btn"><i class="fas fa-share-alt"></i></div>
+                            </div>
+                            <div class="file-icon video">
+                                <i class="fas fa-file-video"></i>
+                            </div>
+                            <h3 class="file-name">Presentation.mp4</h3>
+                            <div class="file-details">
+                                <span>156 MB</span>
+                                <span>1 week ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="file-card">
+                            <div class="file-actions">
+                                <div class="file-action-btn"><i class="fas fa-download"></i></div>
+                                <div class="file-action-btn"><i class="fas fa-share-alt"></i></div>
+                            </div>
+                            <div class="file-icon audio">
+                                <i class="fas fa-file-audio"></i>
+                            </div>
+                            <h3 class="file-name">Podcast.mp3</h3>
+                            <div class="file-details">
+                                <span>45.3 MB</span>
+                                <span>3 weeks ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="file-card">
+                            <div class="file-actions">
+                                <div class="file-action-btn"><i class="fas fa-download"></i></div>
+                                <div class="file-action-btn"><i class="fas fa-share-alt"></i></div>
+                            </div>
+                            <div class="file-icon">
+                                <i class="fas fa-file-word"></i>
+                            </div>
+                            <h3 class="file-name">Document.docx</h3>
+                            <div class="file-details">
+                                <span>1.8 MB</span>
+                                <span>Today</span>
+                            </div>
+                        </div>
+                        
+                        <div class="file-card">
+                            <div class="file-actions">
+                                <div class="file-action-btn"><i class="fas fa-download"></i></div>
+                                <div class="file-action-btn"><i class="fas fa-share-alt"></i></div>
+                            </div>
+                            <div class="file-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <h3 class="file-name">Budget.xlsx</h3>
+                            <div class="file-details">
+                                <span>3.1 MB</span>
+                                <span>5 days ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="file-card">
+                            <div class="file-actions">
+                                <div class="file-action-btn"><i class="fas fa-download"></i></div>
+                                <div class="file-action-btn"><i class="fas fa-share-alt"></i></div>
+                            </div>
+                            <div class="file-icon">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <h3 class="file-name">Project Files.zip</h3>
+                            <div class="file-details">
+                                <span>98.7 MB</span>
+                                <span>2 weeks ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="file-card">
+                            <div class="file-actions">
+                                <div class="file-action-btn"><i class="fas fa-download"></i></div>
+                                <div class="file-action-btn"><i class="fas fa-share-alt"></i></div>
+                            </div>
+                            <div class="file-icon">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <h3 class="file-name">Work Documents</h3>
+                            <div class="file-details">
+                                <span>1.2 GB</span>
+                                <span>Updated today</span>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <div class="background-options">
+        <div class="bg-btn bg-1 active" data-bg="1"></div>
+        <div class="bg-btn bg-2" data-bg="2"></div>
+        <div class="bg-btn bg-3" data-bg="3"></div>
+        <div class="bg-btn bg-4" data-bg="4"></div>
+    </div>
+
+    <script>
+        // Dark mode toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+        
+        // Upload area interaction
+        const uploadArea = document.getElementById('uploadArea');
+        
+        uploadArea.addEventListener('click', () => {
+            alert('File upload dialog would open here');
+        });
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.backgroundColor = 'rgba(98, 0, 234, 0.1)';
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = 'var(--border)';
+            uploadArea.style.backgroundColor = 'var(--bg)';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--border)';
+            uploadArea.style.backgroundColor = 'var(--bg)';
+            alert('Files would be uploaded in a real application');
+        });
+        
+        // File card interactions
+        const fileCards = document.querySelectorAll('.file-card');
+        
+        fileCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('file-card')) return;
+                
+                const fileName = card.querySelector('.file-name').textContent;
+                alert(`Would open preview for: ${fileName}`);
+            });
+            
+            // Add context menu for file actions
+            card.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                alert(`Context menu with download, share, delete options for file`);
+            });
+        });
+
+        // Background change functionality
+        const bgButtons = document.querySelectorAll('.bg-btn');
+        
+        bgButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                bgButtons.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Change background based on selection
+                const bgNum = btn.getAttribute('data-bg');
+                let gradient;
+                
+                switch(bgNum) {
+                    case '1':
+                        gradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        break;
+                    case '2':
+                        gradient = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+                        break;
+                    case '3':
+                        gradient = 'linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)';
+                        break;
+                    case '4':
+                        gradient = 'linear-gradient(135deg, #f46b45 0%, #eea849 100%)';
+                        break;
+                    default:
+                        gradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                }
+                
+                document.body.style.background = gradient;
+            });
+        });
+    </script>
+</body>
+</html>

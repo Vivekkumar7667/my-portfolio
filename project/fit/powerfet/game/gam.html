@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitQuest - Gamify Your Fitness Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #3a86ff;
+            --secondary: #ff006e;
+            --accent: #8338ec;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #ffbe0b;
+            --info: #8ac926;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        header {
+            padding: 1.5rem 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--warning);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--warning);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--warning);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .badges-section {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--warning);
+        }
+
+        .badges-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .badge {
+            background: linear-gradient(145deg, #2a2d3e, #1e222f);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .badge:hover {
+            transform: scale(1.1);
+        }
+
+        .badge i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge.locked {
+            filter: grayscale(1);
+        }
+
+        .badge.locked::after {
+            content: '\f023';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .progress-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .progress-bar {
+            height: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--success));
+            border-radius: 50px;
+            width: 65%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .challenge-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .challenge-header {
+            background: var(--primary);
+            padding: 1rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .challenge-body {
+            padding: 1.5rem;
+        }
+
+        .challenge-body ul {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .challenge-body li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .challenge-body li i {
+            color: var(--info);
+        }
+
+        .challenge-button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .challenge-button:hover {
+            background: var(--accent);
+        }
+
+        .leaderboard {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .rank {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-right: 1rem;
+            color: var(--warning);
+            width: 40px;
+            text-align: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .points {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .badges-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>FitQuest</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Challenges</a></li>
+                        <li><a href="#">Leaderboard</a></li>
+                        <li><a href="#">Badges</a></li>
+                        <li><a href="#">Friends</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Level Up Your Fitness Journey</h1>
+            <p>Earn badges, complete challenges, and compete with friends to stay motivated. Turn your fitness journey into a fun game!</p>
+            <a href="#" class="cta-button">Start Your Quest Now</a>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Earn Badges</h3>
+                <p>Unlock achievements and collect badges as you progress through your fitness journey.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-flag-checkered"></i>
+                </div>
+                <h3>Complete Challenges</h3>
+                <p>Take on daily and weekly challenges to keep your workouts fresh and exciting.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Compete with Friends</h3>
+                <p>Challenge your friends, share progress, and climb the leaderboard together.</p>
+            </div>
+        </section>
+
+        <section class="badges-section">
+            <h2 class="section-title">Your Badges</h2>
+            <div class="badges-container">
+                <div class="badge">
+                    <i class="fas fa-fire"></i>
+                    <span>5 Day Streak</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-walking"></i>
+                    <span>10k Steps</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-weight"></i>
+                    <span>First Workout</span>
+                </div>
+                <div class="badge locked">
+                    <i class="fas fa-mountain"></i>
+                    <span>Climber</span>
+                </div>
+                <div class="badge locked">
+                    <i class="fas fa-medal"></i>
+                    <span>Marathon</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-heart"></i>
+                    <span>Cardio Lover</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="progress-section">
+            <h2 class="section-title">Your Progress</h2>
+            <h3>Weekly Goal: 5/7 Workouts Completed</h3>
+            <div class="progress-bar">
+                <div class="progress-fill">65%</div>
+            </div>
+            <h3>Monthly Challenge: 12/20 Workouts</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 60%;">60%</div>
+            </div>
+        </section>
+
+        <section class="challenges-section">
+            <h2 class="section-title">Current Challenges</h2>
+            <div class="challenges-grid">
+                <div class="challenge-card">
+                    <div class="challenge-header">Daily Challenge</div>
+                    <div class="challenge-body">
+                        <h3>30 Minute Cardio</h3>
+                        <p>Complete 30 minutes of continuous cardio exercise</p>
+                        <ul>
+                            <li><i class="fas fa-clock"></i> Time: 24 hours</li>
+                            <li><i class="fas fa-trophy"></i> Reward: 50 points</li>
+                            <li><i class="fas fa-users"></i> 342 participants</li>
+                        </ul>
+                        <button class="challenge-button">Accept Challenge</button>
+                    </div>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-header">Weekly Challenge</div>
+                    <div class="challenge-body">
+                        <h3>Strength Training</h3>
+                        <p>Complete 4 strength training sessions this week</p>
+                        <ul>
+                            <li><i class="fas fa-clock"></i> Time: 7 days</li>
+                            <li><i class="fas fa-trophy"></i> Reward: 200 points + badge</li>
+                            <li><i class="fas fa-users"></i> 189 participants</li>
+                        </ul>
+                        <button class="challenge-button">Accept Challenge</button>
+                    </div>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-header">Social Challenge</div>
+                    <div class="challenge-body">
+                        <h3>Group Hike</h3>
+                        <p>Join a group hike and track your activity</p>
+                        <ul>
+                            <li><i class="fas fa-clock"></i> Time: 3 days</li>
+                            <li><i class="fas fa-trophy"></i> Reward: 100 points</li>
+                            <li><i class="fas fa-users"></i> 87 participants</li>
+                        </ul>
+                        <button class="challenge-button">Accept Challenge</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="leaderboard">
+            <h2 class="section-title">Leaderboard</h2>
+            <div class="leaderboard-list">
+                <div class="leaderboard-item">
+                    <div class="rank">1</div>
+                    <div class="user-info">
+                        <div class="avatar">JD</div>
+                        <div class="name">John Doe</div>
+                    </div>
+                    <div class="points">2,450 pts</div>
+                </div>
+                <div class="leaderboard-item">
+                    <div class="rank">2</div>
+                    <div class="user-info">
+                        <div class="avatar">SM</div>
+                        <div class="name">Sarah Miller</div>
+                    </div>
+                    <div class="points">2,120 pts</div>
+                </div>
+                <div class="leaderboard-item">
+                    <div class="rank">3</div>
+                    <div class="user-info">
+                        <div class="avatar">RJ</div>
+                        <div class="name">Robert Johnson</div>
+                    </div>
+                    <div class="points">1,980 pts</div>
+                </div>
+                <div class="leaderboard-item">
+                    <div class="rank">4</div>
+                    <div class="user-info">
+                        <div class="avatar">YT</div>
+                        <div class="name">You</div>
+                    </div>
+                    <div class="points">1,750 pts</div>
+                </div>
+                <div class="leaderboard-item">
+                    <div class="rank">5</div>
+                    <div class="user-info">
+                        <div class="avatar">EW</div>
+                        <div class="name">Emma Wilson</div>
+                    </div>
+                    <div class="points">1,620 pts</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <p>© 2023 FitQuest. All rights reserved.</p>
+        <p>Gamify your fitness journey and achieve your goals with fun!</p>
+    </footer>
+</body>
+</html>

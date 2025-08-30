@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements Share</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .achievements-container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .achievements-header {
+            background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .achievements-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .achievements-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .achievements-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .achievements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .achievement-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .achievement-text h3 {
+            color: #343a40;
+            margin-bottom: 5px;
+        }
+        
+        .achievement-text p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .share-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .share-section h2 {
+            color: #343a40;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .share-btn {
+            background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(142, 84, 233, 0.3);
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 84, 233, 0.4);
+        }
+        
+        .share-btn:active {
+            transform: translateY(0);
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background: #4776E6;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 900px) {
+            .achievements-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .achievements-header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .achievements-header {
+                padding: 20px;
+            }
+            
+            .achievements-content {
+                padding: 20px;
+            }
+            
+            .achievement-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .achievement-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .share-btn {
+                padding: 14px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="achievements-container">
+        <div class="achievements-header">
+            <h1>Share Your Achievements</h1>
+            <p>Celebrate your milestones and inspire others with your success story</p>
+        </div>
+        
+        <div class="achievements-content">
+            <div class="achievements-list">
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="achievement-text">
+                        <h3>Completed Web Development Course</h3>
+                        <p>Earned on August 15, 2023</p>
+                    </div>
+                </div>
+                
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="achievement-text">
+                        <h3>100 Days of Coding Challenge</h3>
+                        <p>Completed on July 30, 2023</p>
+                    </div>
+                </div>
+                
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="achievement-text">
+                        <h3>Top Contributor of the Month</h3>
+                        <p>Awarded on August 5, 2023</p>
+                    </div>
+                </div>
+                
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="achievement-text">
+                        <h3>Open Source Contribution</h3>
+                        <p>Recognized on August 12, 2023</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="share-section">
+                <h2>Share Your Progress</h2>
+                <button class="share-btn">
+                    <i class="fas fa-share-alt"></i>
+                    Share Progress
+                </button>
+                
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.share-btn').addEventListener('click', function() {
+            alert('Congratulations on your achievements! Your progress has been shared with the community.');
+        });
+    </script>
+</body>
+</html>
