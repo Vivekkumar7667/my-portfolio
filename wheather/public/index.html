@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mausam - Weather App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+            color: #2c3e50;
+            min-height: 100vh;
+            transition: background 1.5s ease;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: #ff8c00;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-container {
+            display: flex;
+            width: 100%;
+            max-width: 500px;
+            margin: 15px 0;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .search-container button {
+            padding: 14px 22px;
+            border: none;
+            background: #ff8c00;
+            color: white;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .search-container button:hover {
+            background: #ff7600;
+            transform: translateY(-2px);
+        }
+
+        /* Main Weather Card */
+        .weather-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .location {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .temperature {
+            font-size: 5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            color: #34495e;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .weather-condition {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .weather-icon {
+            font-size: 3rem;
+            color: #ff8c00;
+        }
+
+        .feels-like {
+            font-size: 1.4rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        /* Weather Details */
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-card i {
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .detail-card h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .detail-card p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Forecast Sections */
+        .forecast-section {
+            margin: 30px 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .hourly-forecast {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        .hour-card {
+            flex: 0 0 auto;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            min-width: 100px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .hour-card:hover {
+            transform: scale(1.05);
+        }
+
+        .daily-forecast {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .day-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .day-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Alert Banner */
+        .alert-banner {
+            background: linear-gradient(to right, #ff4757, #e84118);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.01); }
+            100% { opacity: 0.9; transform: scale(1); }
+        }
+
+        /* Map Section */
+        .map-container {
+            height: 300px;
+            background: #ddd;
+            border-radius: 15px;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .map-placeholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Search History */
+        .search-history {
+            margin: 30px 0;
+        }
+
+        .history-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-item:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 40px;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            display: none;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid #3498db;
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-container {
+                width: 100%;
+                margin: 15px 0;
+            }
+            
+            .temperature {
+                font-size: 3rem;
+            }
+            
+            .location {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Dynamic Background Classes */
+        body.sunny {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+        }
+        
+        body.night {
+            background: linear-gradient(120deg, #0c2461 0%, #1e3799 100%);
+        }
+        
+        body.cloudy {
+            background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+        }
+        
+        body.rainy {
+            background: linear-gradient(120deg, #4da0b0 0%, #d39d38 100%);
+        }
+    </style>
+</head>
+<body class="cloudy">
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-cloud-sun"></i>
+                <h1>Mausam</h1>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Shahar ka naam dalein...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </header>
+
+        <div class="alert-banner" id="weather-alert" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <div id="alert-text"></div>
+        </div>
+
+        <div class="loader" id="loader"></div>
+
+        <div class="weather-card" id="weather-card">
+            <h2 class="location" id="location"></h2>
+            <div class="temperature" id="temperature"></div>
+            <div class="weather-condition">
+                <i class="fas weather-icon" id="weather-icon"></i>
+                <span id="weather-condition"></span>
+            </div>
+            <div class="feels-like" id="feels-like"></div>
+
+            <div class="weather-details">
+                <div class="detail-card">
+                    <i class="fas fa-wind"></i>
+                    <h3>Hawa Ki Gati</h3>
+                    <p id="wind-speed"></p>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-tint"></i>
+                    <h3>Aardrata</h3>
+                    <p id="humidity"></p>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-sun"></i>
+                    <h3>UV Index</h3>
+                    <p id="uv-index"></p>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-sun"></i>
+                    <h3>Suraj</h3>
+                    <p id="sun-times"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="forecast-section">
+            <h2 class="section-title">Agle 24 Ghante</h2>
+            <div class="hourly-forecast" id="hourly-forecast">
+                <!-- Hourly forecast will be inserted here by JavaScript -->
+            </div>
+
+            <h2 class="section-title">Agle 7 Din</h2>
+            <div class="daily-forecast" id="daily-forecast">
+                <!-- Daily forecast will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div class="map-placeholder">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Interactive Radar Map Yahan Dikhega</span>
+            </div>
+        </div>
+
+        <div class="search-history">
+            <h2 class="section-title">Aapke Haan Ka Itihaas</h2>
+            <div class="history-items" id="search-history">
+                <!-- Search history will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Mausam App. Sabhi adhikar reserved.</p>
+            <p>OpenWeatherMap API ka upyog kiya gaya hai</p>
+        </footer>
+    </div>
+
+    <script>
+        // API key ko mock data ke liye placeholder ki tarah istemal kar rahe hain
+        const apiKey = "ec716d981fc1f387f3713ba472a9a8a4"; 
+
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const loader = document.getElementById('loader');
+        const weatherCard = document.getElementById('weather-card');
+        const locationEl = document.getElementById('location');
+        const temperatureEl = document.getElementById('temperature');
+        const weatherConditionEl = document.getElementById('weather-condition');
+        const weatherIconEl = document.getElementById('weather-icon');
+        const feelsLikeEl = document.getElementById('feels-like');
+        const windSpeedEl = document.getElementById('wind-speed');
+        const humidityEl = document.getElementById('humidity');
+        const uvIndexEl = document.getElementById('uv-index');
+        const sunTimesEl = document.getElementById('sun-times');
+        const hourlyForecastEl = document.getElementById('hourly-forecast');
+        const dailyForecastEl = document.getElementById('daily-forecast');
+        const searchHistoryEl = document.getElementById('search-history');
+        const weatherAlertEl = document.getElementById('weather-alert');
+        const alertTextEl = document.getElementById('alert-text');
+
+        function getWeatherIconClass(iconCode) {
+            const iconMap = {
+                '01d': 'fa-sun', '01n': 'fa-moon',
+                '02d': 'fa-cloud-sun', '02n': 'fa-cloud-moon',
+                '03d': 'fa-cloud', '03n': 'fa-cloud',
+                '04d': 'fa-cloud-meatball', '04n': 'fa-cloud-meatball',
+                '09d': 'fa-cloud-showers-heavy', '09n': 'fa-cloud-showers-heavy',
+                '10d': 'fa-cloud-sun-rain', '10n': 'fa-cloud-moon-rain',
+                '11d': 'fa-bolt', '11n': 'fa-bolt',
+                '13d': 'fa-snowflake', '13n': 'fa-snowflake',
+                '50d': 'fa-smog', '50n': 'fa-smog'
+            };
+            return iconMap[iconCode] || 'fa-cloud';
+        }
+
+        function updateBackground(weatherMain) {
+            document.body.classList.remove('sunny', 'night', 'cloudy', 'rainy');
+            const hour = new Date().getHours();
+            if (weatherMain === 'Clear') {
+                document.body.classList.add(hour >= 6 && hour < 18 ? 'sunny' : 'night');
+            } else if (weatherMain === 'Clouds') {
+                document.body.classList.add('cloudy');
+            } else if (weatherMain === 'Rain' || weatherMain === 'Drizzle') {
+                document.body.classList.add('rainy');
+            } else if (weatherMain === 'Thunderstorm') {
+                document.body.classList.add('rainy');
+            } else {
+                document.body.classList.add('cloudy');
+            }
+        }
+
+        function updateUI(currentWeather, forecast) {
+            locationEl.textContent = `${currentWeather.name}, ${currentWeather.sys.country}`;
+            temperatureEl.textContent = `${Math.round(currentWeather.main.temp)}°C`;
+            weatherConditionEl.textContent = currentWeather.weather[0].description.charAt(0).toUpperCase() + currentWeather.weather[0].description.slice(1);
+            weatherIconEl.className = `fas weather-icon ${getWeatherIconClass(currentWeather.weather[0].icon)}`;
+            feelsLikeEl.textContent = `Mehsoos ho raha hai: ${Math.round(currentWeather.main.feels_like)}°C`;
+            
+            windSpeedEl.textContent = `${Math.round(currentWeather.wind.speed * 3.6)} km/h`;
+            humidityEl.textContent = `${currentWeather.main.humidity}%`;
+            uvIndexEl.textContent = 'N/A'; 
+            const sunrise = new Date(currentWeather.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const sunset = new Date(currentWeather.sys.sunset * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            sunTimesEl.textContent = `${sunrise} | ${sunset}`;
+
+            updateBackground(currentWeather.weather[0].main);
+
+            if (currentWeather.weather[0].main === 'Rain' || currentWeather.weather[0].main === 'Thunderstorm') {
+                alertTextEl.textContent = 'Aaj baarish ya toofan hone ki sambhavana hai. Apna chhata saath le jayein.';
+                weatherAlertEl.style.display = 'flex';
+            } else {
+                weatherAlertEl.style.display = 'none';
+            }
+
+            hourlyForecastEl.innerHTML = '';
+            const hourlyData = forecast.list.slice(0, 8);
+            const now = new Date();
+            hourlyData.forEach((hour, index) => {
+                const date = new Date(hour.dt * 1000);
+                const time = index === 0 ? 'Abhi' : date.toLocaleTimeString('hi-IN', { hour: 'numeric' });
+                const card = document.createElement('div');
+                card.className = 'hour-card';
+                card.innerHTML = `
+                    <div>${time}</div>
+                    <i class="fas ${getWeatherIconClass(hour.weather[0].icon)}"></i>
+                    <div>${Math.round(hour.main.temp)}°C</div>
+                `;
+                hourlyForecastEl.appendChild(card);
+            });
+
+            dailyForecastEl.innerHTML = '';
+            const dailyData = forecast.list.filter(item => item.dt_txt.includes('12:00:00'));
+            const days = ['Raviwar', 'Somwar', 'Mangalwar', 'Budhwar', 'Guruwar', 'Shukrawar', 'Shaniwar'];
+            dailyData.forEach((day, index) => {
+                const date = new Date(day.dt * 1000);
+                const dayName = index === 0 ? 'Aaj' : days[date.getDay()];
+                const card = document.createElement('div');
+                card.className = 'day-card';
+                card.innerHTML = `
+                    <div>${dayName}</div>
+                    <i class="fas ${getWeatherIconClass(day.weather[0].icon)}"></i>
+                    <div>${Math.round(day.main.temp_max)}° / ${Math.round(day.main.temp_min)}°</div>
+                `;
+                dailyForecastEl.appendChild(card);
+            });
+        }
+        
+        // Mock data functions
+        function getMockWeatherData(city) {
+            const cityData = {
+                'Mumbai': {
+                    "name": "Mumbai",
+                    "sys": { "country": "IN", "sunrise": 1693526400, "sunset": 1693570800 },
+                    "main": { "temp": 28, "feels_like": 32, "humidity": 75 },
+                    "weather": [{ "main": "Clouds", "description": "overcast clouds", "icon": "04d" }],
+                    "wind": { "speed": 5 }
+                },
+                'Delhi': {
+                    "name": "Delhi",
+                    "sys": { "country": "IN", "sunrise": 1693526400, "sunset": 1693570800 },
+                    "main": { "temp": 34, "feels_like": 38, "humidity": 60 },
+                    "weather": [{ "main": "Clear", "description": "clear sky", "icon": "01d" }],
+                    "wind": { "speed": 8 }
+                },
+                'Kolkata': {
+                    "name": "Kolkata",
+                    "sys": { "country": "IN", "sunrise": 1693526400, "sunset": 1693570800 },
+                    "main": { "temp": 30, "feels_like": 35, "humidity": 80 },
+                    "weather": [{ "main": "Rain", "description": "light rain", "icon": "10d" }],
+                    "wind": { "speed": 10 }
+                },
+                'Bangalore': {
+                    "name": "Bangalore",
+                    "sys": { "country": "IN", "sunrise": 1693526400, "sunset": 1693570800 },
+                    "main": { "temp": 24, "feels_like": 25, "humidity": 70 },
+                    "weather": [{ "main": "Clouds", "description": "few clouds", "icon": "02d" }],
+                    "wind": { "speed": 6 }
+                },
+                'Chennai': {
+                    "name": "Chennai",
+                    "sys": { "country": "IN", "sunrise": 1693526400, "sunset": 1693570800 },
+                    "main": { "temp": 31, "feels_like": 36, "humidity": 78 },
+                    "weather": [{ "main": "Clear", "description": "clear sky", "icon": "01d" }],
+                    "wind": { "speed": 7 }
+                },
+            };
+            return cityData[city];
+        }
+
+        function getMockForecastData(city) {
+            const now = new Date();
+            const mockList = [];
+            const tempMap = {
+                'Mumbai': [28, 29, 30, 27, 26, 25, 24, 23],
+                'Delhi': [34, 35, 36, 33, 32, 31, 30, 29],
+                'Kolkata': [30, 29, 28, 27, 26, 25, 24, 23],
+                'Bangalore': [24, 25, 26, 23, 22, 21, 20, 19],
+                'Chennai': [31, 32, 33, 30, 29, 28, 27, 26]
+            };
+            const iconMap = {
+                'Mumbai': ['04d', '04d', '04d', '10d', '10d', '10d', '04d', '04d'],
+                'Delhi': ['01d', '01d', '01d', '02d', '02d', '02d', '02d', '02d'],
+                'Kolkata': ['10d', '10d', '10d', '04d', '04d', '04d', '04d', '04d'],
+                'Bangalore': ['02d', '02d', '02d', '02d', '02d', '02d', '02d', '02d'],
+                'Chennai': ['01d', '01d', '01d', '01d', '02d', '02d', '02d', '02d']
+            };
+
+            const selectedTemps = tempMap[city] || tempMap['Mumbai'];
+            const selectedIcons = iconMap[city] || iconMap['Mumbai'];
+
+            for (let i = 0; i < 8; i++) {
+                mockList.push({
+                    dt: now.getTime() / 1000 + (i * 3600),
+                    main: {
+                        temp: selectedTemps[i],
+                        temp_min: selectedTemps[i] - 2,
+                        temp_max: selectedTemps[i] + 2,
+                    },
+                    weather: [{
+                        description: "overcast clouds",
+                        icon: selectedIcons[i]
+                    }],
+                    dt_txt: new Date(now.getTime() + (i * 3600000)).toISOString().replace('T', ' ')
+                });
+            }
+            return { list: mockList };
+        }
+
+        async function getWeatherData(city) {
+            loader.style.display = 'block';
+            weatherCard.style.opacity = '0.5';
+
+            try {
+                // Mock data ke liye ek chhota sa delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                const currentWeather = getMockWeatherData(city);
+                const forecastData = getMockForecastData(city);
+                
+                if (!currentWeather) {
+                    alertTextEl.textContent = "Shahar nahi mila. Kripya naam dobara check karein.";
+                    weatherAlertEl.style.display = 'flex';
+                    return;
+                }
+
+                updateUI(currentWeather, forecastData);
+                saveSearchHistory(city);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alertTextEl.textContent = 'Network error. Kripya apna internet connection check karein.';
+                weatherAlertEl.style.display = 'flex';
+            } finally {
+                loader.style.display = 'none';
+                weatherCard.style.opacity = '1';
+            }
+        }
+
+        function saveSearchHistory(city) {
+            let history = JSON.parse(localStorage.getItem('weatherSearchHistory') || '[]');
+            if (!history.includes(city)) {
+                history.unshift(city);
+                localStorage.setItem('weatherSearchHistory', JSON.stringify(history.slice(0, 5)));
+            }
+            renderSearchHistory();
+        }
+
+        function renderSearchHistory() {
+            searchHistoryEl.innerHTML = '';
+            const history = JSON.parse(localStorage.getItem('weatherSearchHistory') || '[]');
+            
+            history.forEach(city => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.textContent = city;
+                historyItem.addEventListener('click', () => {
+                    searchInput.value = city;
+                    getWeatherData(city);
+                });
+                searchHistoryEl.appendChild(historyItem);
+            });
+        }
+
+        searchBtn.addEventListener('click', () => {
+            const city = searchInput.value.trim();
+            if (city) {
+                getWeatherData(city);
+            }
+        });
+        
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSearchHistory();
+            getWeatherData('Mumbai');
+        });
+    </script>
+</body>
+</html>
